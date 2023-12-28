@@ -1,2 +1,2 @@
 # java-kanban
-Repository for homework project.
+Dodo list task v.1
