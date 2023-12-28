@@ -111,7 +111,7 @@ public class StorageManager {
     public static Map<String, Subtask> getAllSubtasksByEpicId (String epicId){
         Map<String, Subtask> result = taskList.entrySet()
                 .stream()
-                .filter(value -> value.getValue().getParentId().contains(epicId))
+                .filter(value -> (value.getValue().getParentId() != null && value.getValue().getParentId().contains(epicId)))
                 .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
 
         return result;
