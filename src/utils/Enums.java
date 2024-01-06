@@ -2,39 +2,26 @@ package utils;
 
 public class Enums {
     public enum CommandsIndex {
-        CREATE,
-        UPDATE,
-        REMOVE_ALL,
-        REMOVE_BY_ID,
+        CREATE_TASK,
+        CREATE_SUBTASK,
+        CREATE_EPIC,
+        UPDATE_TASK,
+        UPDATE_SUBTASK,
+        UPDATE_EPIC,
         GET_EPIC_BY_ID,
+        GET_SUBTASK_BY_ID,
         GET_TASK_BY_ID,
+        REMOVE_ALL_TASKS,
+        REMOVE_ALL_SUBTASKS,
+        REMOVE_ALL_EPICS,
+        REMOVE_TASK_BY_ID,
+        REMOVE_SUBTASK_BY_ID,
+        REMOVE_EPIC_BY_ID,
+        GET_EPICS,
+        GET_TASKS,
+        GET_SUBTASKS,
         EXIT,
         DEFAULT
-    }
-
-    public enum TaskTypeCommand {
-        CREATE_TASK,
-        UPDATE_TASK,
-        REMOVE_BY_ID,
-        GET_TASK_BY_ID,
-        GET_EPIC_BY_ID,
-        REMOVE_ALL,
-        CREATE_EPIC,
-        CREATE_SUBTASK,
-        DEFAULT;
-
-        public static TaskTypeCommand getEnumByType(CommandsIndex command, Integer key){
-            if(command == CommandsIndex.CREATE && key == 1) { return CREATE_TASK; }
-            if(command == CommandsIndex.CREATE && key == 2) { return CREATE_EPIC; }
-            if(command == CommandsIndex.CREATE && key == 3) { return CREATE_SUBTASK; }
-            if(command == CommandsIndex.GET_TASK_BY_ID) { return GET_TASK_BY_ID; }
-            if(command == CommandsIndex.GET_EPIC_BY_ID) { return GET_EPIC_BY_ID; }
-            if(command == CommandsIndex.REMOVE_ALL) { return REMOVE_ALL; }
-            if(command == CommandsIndex.REMOVE_BY_ID) { return REMOVE_BY_ID; }
-            if(command == CommandsIndex.UPDATE) { return UPDATE_TASK; }
-
-            return DEFAULT;
-        }
     }
 
     public enum TaskStatus {

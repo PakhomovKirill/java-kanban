@@ -3,8 +3,9 @@ package task;
 import utils.Enums;
 
 public class Subtask extends Task {
-    private String parentId;
-    public Subtask(String title, String description, Enums.TaskStatus status, String parentId){
+    private Integer parentId;
+
+    public Subtask(String title, String description, Enums.TaskStatus status, int parentId){
         super(title, description, status);
         this.parentId = parentId;
     }
@@ -13,11 +14,11 @@ public class Subtask extends Task {
         super(title, description, status);
     }
 
-    public void setParentId(String parentId){
+    public void setParentId(int parentId){
         this.parentId = parentId;
     }
 
-    public String getParentId(){
+    public Integer getParentId(){
         return this.parentId;
     }
 

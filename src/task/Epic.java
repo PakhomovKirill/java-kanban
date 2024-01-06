@@ -1,6 +1,6 @@
 package task;
 
-import storage.StorageManager;
+import manager.TaskManager;
 import utils.Enums;
 
 import java.util.HashMap;
@@ -8,13 +8,13 @@ import java.util.Map;
 
 public class Epic extends Task {
   private HashMap<String, Subtask> childList = new HashMap<>();
-  private StorageManager SM = new StorageManager();
+  private TaskManager TM = new TaskManager();
 
   public Epic(String title, String description){
     super(title, description, Enums.TaskStatus.NEW);
   }
 
-  public Epic(String title, String description, String taskId){
+  public Epic(String title, String description, Integer taskId){
     super(title, description, Enums.TaskStatus.NEW, taskId);
   }
 
@@ -22,8 +22,8 @@ public class Epic extends Task {
     super.setStatus(status);
   }
 
-  public Map<String, Subtask> getAllChildren(){
-    return SM.getAllSubtasksByEpicId(this.getId());
+  public Map<Integer, Subtask> getAllChildren(){
+    return TM.getEpicSubtasks(this.getId());
   }
 
   @Override

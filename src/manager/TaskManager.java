@@ -1,156 +1,178 @@
 package manager;
 
 import layout.PrintCommands;
-import layout.UserInsert;
-import storage.StorageManager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
 import utils.Enums;
+import utils.Utils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TaskManager {
-    private UserInsert userInsert;
     private PrintCommands printCommands = new PrintCommands();
-    private StorageManager SM = new StorageManager();
+    private static final HashMap<Integer, Task> tasks = new HashMap<>();
+    private static final HashMap<Integer, Epic> epics = new HashMap<>();
+    private static final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private int generatorId = 0;
 
-    public TaskManager(){
-        userInsert = new UserInsert(this );
-    }
 
-    public void taskObjectManager(Enums.TaskTypeCommand taskType, Integer taskTypeKey, String taskId){
-        switch (taskType){
-            case  CREATE_SUBTASK:
-                {
-                    Subtask result = createNewSubtask();
-                    if(result != null){
-                        SM.setSubtask(result);
-                    }
-                }
-              break;
-            case CREATE_EPIC:
-                {
-                    Epic result = createNewEpic();
-                    if(result != null){
-                        SM.setEpic(result);
-                    }
-                }
-                break;
-            case CREATE_TASK:
-                {
-                    Subtask result = createNewTask();
-                    if(result != null){
-                        SM.setTask(result);
-                    }
-                }
-                break;
+    private static void updateEpicStatus(Integer epicId){
+        System.out.println(epicId);
+        if(epicId == null) return;
 
-            case UPDATE_TASK:
-                {
-                    if(taskTypeKey == 0){
-                        return;
-                    }
-                    Enums.TasksType key = Enums.TasksType.values()[taskTypeKey - 1];
-                    Task result = updateTask(key);
+        Map<Integer, Subtask> allEpicList = getEpicSubtasks(epicId);
+        Epic currentEpic =  epics.get(epicId);
 
-                    if(result != null){
-                        SM.updateTask(result, key, result.getId());
-                    }
-                }
-                break;
-            case REMOVE_BY_ID:
-                if(taskId != null){
-                    SM.removeById(taskId);
-                }
-                break;
-            case GET_EPIC_BY_ID:
-                if(taskId != null){
-                  Epic epic = SM.getEpicById(taskId);
-                  printCommands.printEpicContains(epic);
-                }
-                break;
-            case GET_TASK_BY_ID:
-                if(taskId != null){
-                    Subtask subtask = SM.getTaskById(taskId);
-                    printCommands.printTaskContains(subtask);
-                }
-                break;
-            case REMOVE_ALL:
-                SM.removeAll();
-                break;
-            default:
-                break;
+        if (currentEpic == null || allEpicList.size() == 0) {
+            return;
+        }
+
+        if (Utils.isEpicListInProgress(allEpicList)) {
+            currentEpic.setStatus(Enums.TaskStatus.IN_PROGRESS);
+        } else if (Utils.isEpicListStatusDoneAll(allEpicList)) {
+            currentEpic.setStatus(Enums.TaskStatus.DONE);
+        } else {
+            currentEpic.setStatus(Enums.TaskStatus.NEW);
         }
     }
 
-    public Subtask createNewSubtask (){
-        boolean result = userInsert.insertCreateSubtask();
-
-        if(result){
-            Subtask subtask = new Subtask(userInsert.getTaskName(), userInsert.getTaskDescription(), Enums.TaskStatus.NEW, userInsert.getParentTaskId());
-            printCommands.printLabel("Добавлена подзадача с идентификатором - " + subtask.getId());
-            return subtask;
-        }
-
-        return null;
-
+    // получение
+    public HashMap<Integer, Subtask> getSubtasks() {
+        return this.subtasks;
     }
 
-    public Epic createNewEpic(){
-        boolean result = userInsert.insertCreateTask("Эпик(а)");
-
-        if(result){
-            Epic epic = new Epic(userInsert.getTaskName(), userInsert.getTaskDescription());
-
-            printCommands.printLabel("Добавлен эпик с идентификатором - " + epic.getId());
-            return epic;
-        }
-
-        return null;
+    public HashMap<Integer, Task> getTasks() {
+        return this.tasks;
     }
 
-    public Subtask createNewTask(){
-        boolean result = userInsert.insertCreateTask("Таск(а)");
-
-        if(result){
-            Subtask task = new Subtask(userInsert.getTaskName(), userInsert.getTaskDescription(), Enums.TaskStatus.NEW);
-
-            printCommands.printLabel("Добавлен задача с идентификатором - " + task.getId());
-            return task;
-        }
-
-        return null;
+    public HashMap<Integer, Epic> getEpics() {
+        return this.epics;
     }
 
-    public Task updateTask(Enums.TasksType key){
-        boolean result = userInsert.insertUpdateTask("Таск(а)/Епик(а)", key);
+    public static Map<Integer, Subtask> getEpicSubtasks(int epicId) {
+        Map<Integer, Subtask> result = subtasks.entrySet()
+                .stream()
+                .filter(value -> (value.getValue().getParentId() != null && value.getValue().getParentId() == epicId))
+                .collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
 
-        if(result){
-            Task task = new Task(userInsert.getTaskName(), userInsert.getTaskDescription(), userInsert.getTaskStatus(), userInsert.getTaskId());
-
-            printCommands.printLabel("Таск с идентификатором обновлен" + userInsert.getTaskId());
-            return task;
-        }
-
-        return null;
+        return result;
     }
 
-    public void taskEditor(Enums.CommandsIndex commandType){
-        switch (commandType){
-            case CREATE:
-                userInsert.insertNewTask(commandType);
-                break;
-            case UPDATE:
-                userInsert.insertUpdateTask(commandType);
-                break;
-            case REMOVE_BY_ID:
-            case GET_TASK_BY_ID:
-            case GET_EPIC_BY_ID:
-                userInsert.insertTaskId(commandType);
-                break;
-            case REMOVE_ALL:
-                taskObjectManager(Enums.TaskTypeCommand.REMOVE_ALL, null, null);
-            default:
-                break;
+    // получение по id
+    public Task getTask(int id) {
+        if(!tasks.containsKey(id)) return null;
+
+        return tasks.get(id);
+    }
+    public Subtask getSubtask(int id) {
+        if(!subtasks.containsKey(id)) return null;
+
+        return subtasks.get(id);
+    }
+    public Epic getEpic(int id) {
+        if(!epics.containsKey(id)) return null;
+
+        return epics.get(id);
+    }
+
+    // создание
+    public int addNewTask(Task task) {
+        task.setId(this.generatorId += 1);
+
+        if(!this.tasks.equals(task)){
+            this.tasks.put(task.getId(), task);
+        }
+
+        return task.getId();
+    }
+
+    public int addNewEpic(Epic epic) {
+        epic.setId(this.generatorId += 1);
+
+        if(!this.epics.equals(epic)){
+            this.epics.put(epic.getId(), epic);
+        }
+
+        updateEpicStatus(epic.getId());
+
+        return epic.getId();
+    }
+
+    public Integer addNewSubtask(Subtask subtask) {
+        subtask.setId(this.generatorId += 1);
+
+        if(!this.subtasks.equals(subtask)){
+            this.subtasks.put(subtask.getId(), subtask);
+        }
+
+        updateEpicStatus(subtask.getParentId());
+
+        return subtask.getId();
+    }
+
+    // обновление
+    public void updateTask(Task task) {
+        Integer taskId = task.getId();
+        if(tasks.containsKey(task.getId())){
+            Task current = tasks.get(taskId);
+            current.setDescription(task.getDescription());
+            current.setTitle(task.getTitle());
+            current.setStatus(task.getStatus());
         }
     }
+
+    public void updateEpic(Epic epic) {
+        Integer epicId = epic.getId();
+        if(epics.containsKey(epicId)){
+            Epic current = epics.get(epicId);
+            current.setDescription(epic.getDescription());
+            current.setTitle(epic.getTitle());
+            updateEpicStatus(current.getId());
+        }
+    }
+
+    public void updateSubtask(Subtask subtask) {
+        Integer subtaskId = subtask.getId();
+        System.out.println(subtaskId);
+        if(subtasks.containsKey(subtaskId)){
+            Subtask current = subtasks.get(subtaskId);
+            current.setDescription(subtask.getDescription());
+            current.setTitle(subtask.getTitle());
+            current.setStatus(subtask.getStatus());
+            updateEpicStatus(current.getParentId());
+        }
+    }
+
+    // удаление
+    public void deleteTasks() {
+        tasks.clear();
+    }
+    public void deleteSubtasks() {
+        subtasks.clear();
+    }
+    public void deleteEpics() {
+        epics.clear();
+    }
+
+
+    // удаление по id
+    public void deleteTask(int id) {
+        if(tasks.containsKey(id)){
+            tasks.remove(id);
+        }
+    }
+    public void deleteEpic(int id) {
+        if(epics.containsKey(id)){
+            epics.remove(id);
+        }
+    }
+    public void deleteSubtask(int id) {
+        if(subtasks.containsKey(id)){
+            subtasks.remove(id);
+        }
+    }
+
 }
