@@ -11,6 +11,7 @@ public class Main {
     private static UserInsert UI;
 
     public static void main(String[] args) {
+
         // тестовый пакет layout только для проверки работоспособности Task Manager, отсутствует в master ветке
         userInput = new UserInput();
         printCommands = new PrintCommands();
