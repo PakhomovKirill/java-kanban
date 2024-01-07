@@ -2,18 +2,12 @@ package task;
 
 import utils.Enums.TaskStatus;
 
-import java.util.UUID;
-
 public class Task {
     private String title;
     private String description;
     private Integer id;
     private TaskStatus status = TaskStatus.NEW;
-    //private UUID uuid = UUID.randomUUID();
 
-//    private String[] getUniqueId(String id){
-//        return uuid.toString().split("-");
-//    }
     public Task(String title, String description, TaskStatus status){
       this.description = description;
       this.title = title;

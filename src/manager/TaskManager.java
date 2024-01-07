@@ -1,6 +1,5 @@
 package manager;
 
-import layout.PrintCommands;
 import task.Epic;
 import task.Subtask;
 import task.Task;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TaskManager {
-    private PrintCommands printCommands = new PrintCommands();
+
     private static final HashMap<Integer, Task> tasks = new HashMap<>();
     private static final HashMap<Integer, Epic> epics = new HashMap<>();
     private static final HashMap<Integer, Subtask> subtasks = new HashMap<>();
