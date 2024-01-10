@@ -8,20 +8,6 @@ public class Task {
     private Integer id;
     private TaskStatus status = TaskStatus.NEW;
 
-    public Task(String title, String description, TaskStatus status){
-      this.description = description;
-      this.title = title;
-      //this.id = getUniqueId(uuid.toString())[1];
-      this.status = status;
-    }
-
-    public Task(String title, String description, TaskStatus status, Integer taskId){
-        this.description = description;
-        this.title = title;
-        this.id = taskId;
-        this.status = status;
-    }
-
     public String getTitle(){
         return this.title;
     }
@@ -37,7 +23,6 @@ public class Task {
     public void setId(int id){
         this.id = id;
     }
-
     public TaskStatus getStatus(){
         return this.status;
     }
@@ -52,5 +37,30 @@ public class Task {
 
     public void setStatus(TaskStatus status){
         this.status = status;
+    }
+
+    public Task(String title, String description, TaskStatus status){
+        this.description = description;
+        this.title = title;
+        this.status = status;
+    }
+
+    public Task(String title, String description, TaskStatus status, Integer taskId){
+        this.description = description;
+        this.title = title;
+        this.id = taskId;
+        this.status = status;
+    }
+
+
+    @Override
+    public String toString() {
+        String result = "Subtask{" +
+                "id='" + this.getId() + '\'' +
+                "status='" + this.getStatus() + '\'' +
+                ",title='" + this.getTitle() + '\'' +
+                ",description=" + this.getDescription() + '}';
+
+        return result;
     }
 }
