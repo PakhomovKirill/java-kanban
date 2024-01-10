@@ -1,17 +1,18 @@
 package task;
-
 import utils.Enums;
 
 public class Subtask extends Task {
     private Integer parentId;
 
-    public Subtask(String title, String description, Enums.TaskStatus status, int parentId){
+    public Subtask(String title, String description, Enums.TaskStatus status, Integer parentId){
         super(title, description, status);
         this.parentId = parentId;
     }
 
-    public Subtask(String title, String description, Enums.TaskStatus status){
+    public Subtask(String title, String description, Enums.TaskStatus status, Integer parentId, Integer subtaskId){
         super(title, description, status);
+        this.setId(subtaskId);
+        this.parentId = parentId;
     }
 
     public void setParentId(int parentId){

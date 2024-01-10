@@ -1,94 +1,99 @@
-import layout.UserInput;
-import layout.PrintCommands;
-import layout.UserInsert;
 import manager.TaskManager;
-import utils.Enums.CommandsIndex;
-
+import task.Epic;
+import task.Subtask;
+import task.Task;
+import utils.Enums;
 public class Main {
-    private static UserInput userInput;
-    private static PrintCommands printCommands;
+
     private static TaskManager TM;
-    private static UserInsert UI;
-
     public static void main(String[] args) {
-
-        // тестовый пакет layout только для проверки работоспособности Task Manager, отсутствует в master ветке
-        userInput = new UserInput();
-        printCommands = new PrintCommands();
         TM = new TaskManager();
-        UI = new UserInsert(TM);
 
-        printCommands.printLabel("Добро пожаловать! Это простой TODO-лист с эпиками и 3 статусами!)");
+        create();
+    }
 
-        while (true){
-            printCommands.printStartMenu();
-
-            Integer inputValue = userInput.setUserInputInt( 19, 1);
-
-            CommandsIndex commandIndexKey = inputValue != null ? CommandsIndex.values()[inputValue - 1] : CommandsIndex.DEFAULT;
-
-            switch (commandIndexKey){
-                case CREATE_TASK:
-                    UI.insertCreateTask();
-                    break;
-                case CREATE_SUBTASK:
-                    UI.insertCreateSubtask();
-                    break;
-                case CREATE_EPIC:
-                    UI.insertCreateEpic();
-                    break;
-                case UPDATE_TASK:
-                    UI.insertUpdateTask();
-                    break;
-                case UPDATE_SUBTASK:
-                    UI.insertUpdateSubTask();
-                    break;
-                case UPDATE_EPIC:
-                    UI.insertUpdateEpic();
-                    break;
-                case GET_EPIC_BY_ID:
-                    UI.getEpic();
-                    break;
-                case GET_SUBTASK_BY_ID:
-                    UI.getSubtask();
-                    break;
-                case GET_TASK_BY_ID:
-                    UI.getTask();
-                    break;
-                case REMOVE_ALL_TASKS:
-                     TM.deleteTasks();
-                    break;
-                case REMOVE_ALL_SUBTASKS:
-                    TM.deleteSubtasks();
-                    break;
-                case REMOVE_ALL_EPICS:
-                    TM.deleteEpics();
-                    break;
-                case REMOVE_TASK_BY_ID:
-                    UI.removeTaskById();
-                    break;
-                case REMOVE_SUBTASK_BY_ID:
-                    UI.removeSubtaskById();
-                    break;
-                case REMOVE_EPIC_BY_ID:
-                    UI.removeEpicById();
-                    break;
-                case GET_EPICS:
-                    UI.getEpics();
-                    break;
-                case GET_TASKS:
-                    UI.getTasks();
-                    break;
-                case GET_SUBTASKS:
-                    UI.getSubtasks();
-                    break;
-                case EXIT:
-                    printCommands.printLabel("До новых встреч");
-                    return;
-                case DEFAULT:
-                    printCommands.printLabel("В меню нет такой команды");
-                    break;
+    private static void printAllTasks(TaskManager manager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getTasks()) {
+            System.out.println(task.toString());
+        }
+        System.out.println("Эпики:");
+        for (Task epic : manager.getEpics()) {
+            System.out.println(epic.toString());
+            System.out.println("--> Подзадачи эпика:");
+            for (Task task : manager.getEpicSubtasks(epic.getId())) {
+                System.out.println("--> " + task.toString());
             }
         }
+        System.out.println("Подзадачи:");
+        for (Task subtask : manager.getSubtasks()) {
+            System.out.println(subtask.toString());
+        }
+    }
+
+    private static void create(){
+        // Создание
+        System.out.println("" + '\n' + '\n' +  "Создание " + '\n' + '\n');
+
+        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
+        Task task2 = new Task("Task #2", "Task2 description", Enums.TaskStatus.IN_PROGRESS);
+        final int taskId1 = TM.addNewTask(task1);
+        final int taskId2 = TM.addNewTask(task2);
+
+        Epic epic1 = new Epic("Epic #1", "Epic1 description");
+        Epic epic2 = new Epic("Epic #2", "Epic2 description");
+        Epic epic3 = new Epic("Epic #3", "Epic3 description");
+        final int epicId1 = TM.addNewEpic(epic1);
+        final int epicId2 = TM.addNewEpic(epic2);
+        final int epicId3 = TM.addNewEpic(epic3);
+
+        Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", Enums.TaskStatus.NEW, epicId1);
+        Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask1 description", Enums.TaskStatus.IN_PROGRESS, epicId1);
+        Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask1 description", Enums.TaskStatus.NEW, epicId2);
+
+        final Integer subtaskId1 = TM.addNewSubtask(subtask1);
+        final Integer subtaskId2 = TM.addNewSubtask(subtask2);
+        final Integer subtaskId3 = TM.addNewSubtask(subtask3);
+
+        printAllTasks(TM);
+
+        //Обновление
+        System.out.println("" + '\n' + '\n' + "Обновление " + '\n' + '\n');
+
+        Task task3 = new Task("Task #1 updated", "Task1 description update-1", Enums.TaskStatus.NEW, taskId1);
+        Task task4 = new Task("Task #2 updated", "Task2 description update-2", Enums.TaskStatus.IN_PROGRESS, taskId2);
+        final int taskId3 = TM.updateTask(task3);
+        final int taskId4 = TM.updateTask(task4);
+
+        Epic epic1UPD = new Epic("Epic #1 update-1", "Epic1 description update-1", epicId1);
+        Epic epic2UPD = new Epic("Epic #2 update-2", "Epic2 description update-2", epicId2);
+        TM.updateEpic(epic1UPD);
+        TM.updateEpic(epic2UPD);
+
+        Subtask subtask4 = new Subtask("Subtask #1-1 update-1", "Subtask1 description update-1", Enums.TaskStatus.NEW, epicId1, subtaskId1);
+        Subtask subtask5 = new Subtask("Subtask #2-1 update-2", "Subtask1 description update-2", Enums.TaskStatus.IN_PROGRESS, epicId1, subtaskId2);
+        Subtask subtask6 = new Subtask("Subtask #3-2 update-3", "Subtask1 description update-3", Enums.TaskStatus.DONE, epicId2, subtaskId3);
+
+        final Integer subtaskId1UPD = TM.updateSubtask(subtask4);
+        final Integer subtaskId2UPD = TM.updateSubtask(subtask5);
+        final Integer subtaskId3UPD = TM.updateSubtask(subtask6);
+
+        printAllTasks(TM);
+
+        //Удаление по id
+        System.out.println("" + '\n' + '\n' + "Удаление по id " + '\n' + '\n');
+        TM.deleteTask(taskId1);
+        TM.deleteSubtask(subtaskId3);
+        TM.deleteEpic(epicId1);
+
+        printAllTasks(TM);
+
+        //Удаление
+        System.out.println("" + '\n' + '\n' + "Удаление" + '\n' + '\n');
+        TM.deleteEpics();
+        TM.deleteSubtasks();
+        TM.deleteTasks();
+
+        printAllTasks(TM);
     }
 }

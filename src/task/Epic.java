@@ -1,14 +1,9 @@
 package task;
-
-import manager.TaskManager;
 import utils.Enums;
-
 import java.util.HashMap;
-import java.util.Map;
 
 public class Epic extends Task {
-  private HashMap<String, Subtask> childList = new HashMap<>();
-  private TaskManager TM = new TaskManager();
+  private HashMap<Integer, Subtask> childList = new HashMap<>();
 
   public Epic(String title, String description){
     super(title, description, Enums.TaskStatus.NEW);
@@ -22,8 +17,27 @@ public class Epic extends Task {
     super.setStatus(status);
   }
 
-  public Map<Integer, Subtask> getAllChildren(){
-    return TM.getEpicSubtasks(this.getId());
+  public void setChildSubtask(Subtask subtask){
+    this.childList.put(subtask.getId(), subtask);
+  }
+
+  public void removeChildSubtask(int subtaskId){
+    this.childList.remove(subtaskId);
+  }
+
+  public HashMap<Integer, Subtask> getAllChildrenList () {
+    return this.childList;
+  }
+
+  public void updateChildList(int subtaskId, Subtask subtask){
+    Subtask current = this.childList.get(subtaskId);
+    current.setDescription(subtask.getDescription());
+    current.setTitle(subtask.getTitle());
+    current.setStatus(subtask.getStatus());
+  }
+
+  public void clearChildSubtasks(){
+    this.childList.clear();
   }
 
   @Override
@@ -34,6 +48,6 @@ public class Epic extends Task {
             ",title='" + this.getTitle() + '\'' +
             ",description=" + this.getDescription() + '\'';
 
-    return result + ",tasks=" + this.getAllChildren().toString() + '}';
+    return result + ",tasks=" + this.getAllChildrenList().toString() + '}';
   }
 }

@@ -2,31 +2,11 @@ package task;
 
 import utils.Enums.TaskStatus;
 
-import java.util.UUID;
-
 public class Task {
     private String title;
     private String description;
     private Integer id;
     private TaskStatus status = TaskStatus.NEW;
-    //private UUID uuid = UUID.randomUUID();
-
-//    private String[] getUniqueId(String id){
-//        return uuid.toString().split("-");
-//    }
-    public Task(String title, String description, TaskStatus status){
-      this.description = description;
-      this.title = title;
-      //this.id = getUniqueId(uuid.toString())[1];
-      this.status = status;
-    }
-
-    public Task(String title, String description, TaskStatus status, Integer taskId){
-        this.description = description;
-        this.title = title;
-        this.id = taskId;
-        this.status = status;
-    }
 
     public String getTitle(){
         return this.title;
@@ -43,7 +23,6 @@ public class Task {
     public void setId(int id){
         this.id = id;
     }
-
     public TaskStatus getStatus(){
         return this.status;
     }
@@ -58,5 +37,30 @@ public class Task {
 
     public void setStatus(TaskStatus status){
         this.status = status;
+    }
+
+    public Task(String title, String description, TaskStatus status){
+        this.description = description;
+        this.title = title;
+        this.status = status;
+    }
+
+    public Task(String title, String description, TaskStatus status, Integer taskId){
+        this.description = description;
+        this.title = title;
+        this.id = taskId;
+        this.status = status;
+    }
+
+
+    @Override
+    public String toString() {
+        String result = "Subtask{" +
+                "id='" + this.getId() + '\'' +
+                "status='" + this.getStatus() + '\'' +
+                ",title='" + this.getTitle() + '\'' +
+                ",description=" + this.getDescription() + '}';
+
+        return result;
     }
 }
