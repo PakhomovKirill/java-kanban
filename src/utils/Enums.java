@@ -6,4 +6,8 @@ public class Enums {
         DONE,
         IN_PROGRESS
     }
+
+    public enum TaskManagerClassTypes {
+        DEFAULT
+    }
 }

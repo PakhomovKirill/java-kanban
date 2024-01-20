@@ -1,6 +1,8 @@
 package task;
 import utils.Enums;
 
+import java.util.Objects;
+
 public class Subtask extends Task {
     private Integer parentId;
 
@@ -33,5 +35,18 @@ public class Subtask extends Task {
                 ",description=" + this.getDescription() + '}';
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (this.getClass() != obj.getClass()) return false;
+        Subtask otherTask = (Subtask) obj;
+        return Objects.equals(title, otherTask.title) &&
+                Objects.equals(description, otherTask.description) &&
+                Objects.equals(id, otherTask.id) &&
+                Objects.equals(parentId, otherTask.parentId) &&
+                Objects.equals(status, otherTask.status);
     }
 }

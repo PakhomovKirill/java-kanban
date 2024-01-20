@@ -1,18 +1,24 @@
-import manager.TaskManager;
+import manager.Managers;
+import manager.task.InMemoryTaskManager;
+import manager.history.*;
 import task.Epic;
 import task.Subtask;
 import task.Task;
 import utils.Enums;
+
 public class Main {
 
-    private static TaskManager TM;
+    private static InMemoryTaskManager TM;
+    private static InMemoryHistoryManager<Task> HM;
+    private static Managers Manager = new Managers();
     public static void main(String[] args) {
-        TM = new TaskManager();
+        HM = Manager.getDefaultHistory();
+        TM = Manager.getDefaultClass();
 
         create();
     }
 
-    private static void printAllTasks(TaskManager manager) {
+    private static void printAllTasks(InMemoryTaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTasks()) {
             System.out.println(task.toString());
@@ -48,14 +54,29 @@ public class Main {
         final int epicId3 = TM.addNewEpic(epic3);
 
         Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", Enums.TaskStatus.NEW, epicId1);
-        Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask1 description", Enums.TaskStatus.IN_PROGRESS, epicId1);
-        Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask1 description", Enums.TaskStatus.NEW, epicId2);
+        Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask2 description", Enums.TaskStatus.IN_PROGRESS, epicId1);
+        Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask3 description", Enums.TaskStatus.NEW, epicId2);
+        Subtask subtask4 = new Subtask("Subtask #4-2", "Subtask4 description", Enums.TaskStatus.NEW, epicId2);
+        Subtask subtask5 = new Subtask("Subtask #5-2", "Subtask5 description", Enums.TaskStatus.NEW, epicId2);
+        Subtask subtask6 = new Subtask("Subtask #6-2", "Subtask6 description", Enums.TaskStatus.NEW, epicId2);
+        Subtask subtask7 = new Subtask("Subtask #7-2", "Subtask7 description", Enums.TaskStatus.NEW, epicId2);
 
         final Integer subtaskId1 = TM.addNewSubtask(subtask1);
         final Integer subtaskId2 = TM.addNewSubtask(subtask2);
         final Integer subtaskId3 = TM.addNewSubtask(subtask3);
+        final Integer subtaskId4 = TM.addNewSubtask(subtask4);
+        final Integer subtaskId5 = TM.addNewSubtask(subtask5);
+        final Integer subtaskId6 = TM.addNewSubtask(subtask6);
+        final Integer subtaskId7 = TM.addNewSubtask(subtask7);
 
         printAllTasks(TM);
+
+        TM.getEpic(epicId1);
+        TM.getSubtask(subtaskId1);
+        TM.getTask(taskId1);
+        TM.getEpic(epicId2);
+        TM.getSubtask(subtaskId2);
+        TM.getTask(taskId1);
 
         //Обновление
         System.out.println("" + '\n' + '\n' + "Обновление " + '\n' + '\n');
@@ -70,15 +91,22 @@ public class Main {
         TM.updateEpic(epic1UPD);
         TM.updateEpic(epic2UPD);
 
-        Subtask subtask4 = new Subtask("Subtask #1-1 update-1", "Subtask1 description update-1", Enums.TaskStatus.NEW, epicId1, subtaskId1);
-        Subtask subtask5 = new Subtask("Subtask #2-1 update-2", "Subtask1 description update-2", Enums.TaskStatus.IN_PROGRESS, epicId1, subtaskId2);
-        Subtask subtask6 = new Subtask("Subtask #3-2 update-3", "Subtask1 description update-3", Enums.TaskStatus.DONE, epicId2, subtaskId3);
+        Subtask subtask40 = new Subtask("Subtask #1-1 update-1", "Subtask1 description update-1", Enums.TaskStatus.NEW, epicId1, subtaskId1);
+        Subtask subtask50 = new Subtask("Subtask #2-1 update-2", "Subtask1 description update-2", Enums.TaskStatus.IN_PROGRESS, epicId1, subtaskId2);
+        Subtask subtask60 = new Subtask("Subtask #3-2 update-3", "Subtask1 description update-3", Enums.TaskStatus.DONE, epicId2, subtaskId3);
 
-        final Integer subtaskId1UPD = TM.updateSubtask(subtask4);
-        final Integer subtaskId2UPD = TM.updateSubtask(subtask5);
-        final Integer subtaskId3UPD = TM.updateSubtask(subtask6);
+        final Integer subtaskId1UPD = TM.updateSubtask(subtask40);
+        final Integer subtaskId2UPD = TM.updateSubtask(subtask50);
+        final Integer subtaskId3UPD = TM.updateSubtask(subtask60);
 
         printAllTasks(TM);
+
+        TM.getEpic(epicId1);
+        TM.getSubtask(subtaskId1);
+        TM.getTask(taskId3);
+        TM.getEpic(epicId2);
+        TM.getSubtask(subtaskId2);
+        TM.getTask(taskId4);
 
         //Удаление по id
         System.out.println("" + '\n' + '\n' + "Удаление по id " + '\n' + '\n');
@@ -95,5 +123,14 @@ public class Main {
         TM.deleteTasks();
 
         printAllTasks(TM);
+
+        //Обновление
+        System.out.println("" + '\n' + '\n' + "История " + '\n' + '\n');
+
+        System.out.println("История:");
+        for (Task task : HM.getTasksHistory()) {
+            System.out.println(task.toString());
+        }
+
     }
 }
