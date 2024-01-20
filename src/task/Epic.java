@@ -1,6 +1,7 @@
 package task;
 import utils.Enums;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Epic extends Task {
   private HashMap<Integer, Subtask> childList = new HashMap<>();
@@ -30,10 +31,7 @@ public class Epic extends Task {
   }
 
   public void updateChildList(int subtaskId, Subtask subtask){
-    Subtask current = this.childList.get(subtaskId);
-    current.setDescription(subtask.getDescription());
-    current.setTitle(subtask.getTitle());
-    current.setStatus(subtask.getStatus());
+    this.childList.put(subtaskId, subtask);
   }
 
   public void clearChildSubtasks(){
@@ -49,5 +47,18 @@ public class Epic extends Task {
             ",description=" + this.getDescription() + '\'';
 
     return result + ",tasks=" + this.getAllChildrenList().toString() + '}';
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (this.getClass() != obj.getClass()) return false;
+    Epic otherTask = (Epic) obj;
+    return Objects.equals(title, otherTask.title) &&
+            Objects.equals(description, otherTask.description) &&
+            Objects.equals(id, otherTask.id) &&
+            Objects.equals(childList.toString(), otherTask.childList.toString()) &&
+            Objects.equals(status, otherTask.status);
   }
 }
