@@ -1,6 +1,7 @@
 import manager.Managers;
 import manager.task.InMemoryTaskManager;
 import manager.history.*;
+import manager.task.TaskManager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
@@ -8,17 +9,15 @@ import utils.Enums;
 
 public class Main {
 
-    private static InMemoryTaskManager TM;
-    private static InMemoryHistoryManager<Task> HM;
+    private static TaskManager TM;
     private static Managers Manager = new Managers();
     public static void main(String[] args) {
-        HM = Manager.getDefaultHistory();
-        TM = Manager.getDefaultClass();
+        TM = Manager.getDefault();
 
         create();
     }
 
-    private static void printAllTasks(InMemoryTaskManager manager) {
+    private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTasks()) {
             System.out.println(task.toString());
@@ -128,7 +127,7 @@ public class Main {
         System.out.println("" + '\n' + '\n' + "История " + '\n' + '\n');
 
         System.out.println("История:");
-        for (Task task : HM.getTasksHistory()) {
+        for (Task task : TM.getHistory()) {
             System.out.println(task.toString());
         }
 

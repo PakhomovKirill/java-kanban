@@ -2,21 +2,14 @@ package manager;
 
 import manager.task.InMemoryTaskManager;
 import manager.history.InMemoryHistoryManager;
+import manager.task.TaskManager;
+import manager.history.HistoryManager;
 
 public class Managers {
-    private InMemoryTaskManager DefaultManager;
-    private InMemoryHistoryManager HistoryManager;
-
-    public Managers(){
-        HistoryManager = new InMemoryHistoryManager(10);
-        DefaultManager = new InMemoryTaskManager(HistoryManager);
+    public TaskManager getDefault() {
+        return new InMemoryTaskManager();
     }
-
-    public InMemoryTaskManager getDefaultClass (){
-        return DefaultManager;
-    }
-
-    public InMemoryHistoryManager getDefaultHistory(){
-       return HistoryManager;
+    public HistoryManager getDefaultHistory() {
+        return new InMemoryHistoryManager(10);
     }
 }

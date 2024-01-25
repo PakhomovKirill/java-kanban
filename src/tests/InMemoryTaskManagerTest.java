@@ -3,7 +3,7 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import manager.Managers;
-import manager.task.InMemoryTaskManager;
+import manager.task.TaskManager;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.Subtask;
@@ -13,7 +13,7 @@ import utils.Enums;
 class InMemoryTaskManagerTest {
 
     private static Managers Manager = new Managers();
-    private static InMemoryTaskManager TM = Manager.getDefaultClass();
+    private static TaskManager TM = Manager.getDefault();
 
     @Test
     public void  IsTaskManagerCreateTaskTest(){

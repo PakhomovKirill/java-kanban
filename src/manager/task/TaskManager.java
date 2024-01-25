@@ -12,8 +12,6 @@ public interface TaskManager {
 
     public int addNewEpic(Epic epic);
 
-    public void updateEpicStatus(Integer epicId);
-
     public ArrayList<Subtask> getSubtasks();
 
     public ArrayList<Task> getTasks();
@@ -47,5 +45,7 @@ public interface TaskManager {
     public void deleteEpic(int id);
 
     public void deleteSubtask(int id);
+
+    public ArrayList<Task> getHistory();
 
 }

@@ -1,8 +1,7 @@
 package tests;
 
 import manager.Managers;
-import manager.history.InMemoryHistoryManager;
-import manager.task.InMemoryTaskManager;
+import manager.task.TaskManager;
 import org.junit.jupiter.api.Test;
 import task.Task;
 import utils.Enums;
@@ -14,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryHistoryManagerTest {
 
     private static Managers Manager = new Managers();
-    private static InMemoryHistoryManager HM = Manager.getDefaultHistory();
-    private static InMemoryTaskManager TM = Manager.getDefaultClass();
+
+    private static TaskManager TM = Manager.getDefault();
 
     @Test
     public void IsUniqueTaskInHistoryIdTest(){
@@ -27,7 +26,7 @@ class InMemoryHistoryManagerTest {
         TM.updateTask(task2);
         TM.getTask(taskId1);
 
-        ArrayList<Task> historyList = HM.getTasksHistory();
+        ArrayList<Task> historyList = TM.getHistory();
 
         assertNotEquals(historyList.get(0), historyList.get(1), "Задачи не должны быть равны равны.");
     }

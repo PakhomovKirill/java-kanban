@@ -3,14 +3,13 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import manager.Managers;
-import manager.history.InMemoryHistoryManager;
-import manager.task.InMemoryTaskManager;
+import manager.history.HistoryManager;
 import org.junit.jupiter.api.Test;
 
 class ManagersTest {
     private static Managers Manager = new Managers();
-    private static InMemoryHistoryManager HM = Manager.getDefaultHistory();
-    private static InMemoryTaskManager TM = Manager.getDefaultClass();
+    private static HistoryManager HM = Manager.getDefaultHistory();
+    private static HistoryManager TM = Manager.getDefaultHistory();
 
     @Test
     public void IsManagerClassesIsExist(){

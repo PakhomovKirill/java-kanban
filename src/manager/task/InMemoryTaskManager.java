@@ -1,6 +1,7 @@
 package manager.task;
 
-import manager.history.InMemoryHistoryManager;
+import manager.Managers;
+import manager.history.HistoryManager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
@@ -12,22 +13,20 @@ import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private InMemoryHistoryManager<Task> HM;
+    private HistoryManager<Task> HM;
+    private Managers Manager = new Managers();
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private int generatorId = 0;
 
     public InMemoryTaskManager(){
-        HM = null;
+        HM = Manager.getDefaultHistory();
     }
 
-    public InMemoryTaskManager(InMemoryHistoryManager<Task> manager){
-        HM = manager;
-    }
-
-    public void updateEpicStatus(Integer epicId){
-        if(epicId == null) return;
+    private void updateEpicStatus(Integer epicId){
+        // прошу прощения, тупая привычка не ставить скобки + в моей практике обычно линтер все за меня делает) , хотел уточнить, а какой линтер лучше всего в использовать для java
+        if(epicId == null) { return; }
 
         ArrayList<Subtask> allEpicList = getEpicSubtasks(epicId);
         Epic currentEpic =  epics.get(epicId);
@@ -229,5 +228,9 @@ public class InMemoryTaskManager implements TaskManager {
         if(currentEpic.getAllChildrenList().values().size() == 0){
             epics.remove(currentEpic.getId());
         }
+    }
+
+    public ArrayList<Task> getHistory(){
+        return HM.getTasksHistory();
     }
 }
