@@ -25,7 +25,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void updateEpicStatus(Integer epicId){
-        // прошу прощения, тупая привычка не ставить скобки + в моей практике обычно линтер все за меня делает) , хотел уточнить, а какой линтер лучше всего в использовать для java
         if(epicId == null) { return; }
 
         ArrayList<Subtask> allEpicList = getEpicSubtasks(epicId);

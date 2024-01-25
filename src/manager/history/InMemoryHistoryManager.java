@@ -12,6 +12,7 @@ public class InMemoryHistoryManager<T> implements HistoryManager<T>{
     }
 
     public void addTaskToHistory (T task){
+        // прошу прощения, тупая привычка не ставить скобки + в моей практике обычно линтер все за меня делает) , хотел уточнить, а какой линтер лучше всего в использовать для java
         if(task == null) { return; }
 
         int size = this.historyTasks.size();
