@@ -10,6 +10,6 @@ public class Managers {
         return new InMemoryTaskManager();
     }
     public HistoryManager getDefaultHistory() {
-        return new InMemoryHistoryManager(10);
+        return new InMemoryHistoryManager();
     }
 }

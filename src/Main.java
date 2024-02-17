@@ -1,6 +1,4 @@
 import manager.Managers;
-import manager.task.InMemoryTaskManager;
-import manager.history.*;
 import manager.task.TaskManager;
 import task.Epic;
 import task.Subtask;
@@ -70,10 +68,20 @@ public class Main {
 
         printAllTasks(TM);
 
-        TM.getEpic(epicId1);
         TM.getSubtask(subtaskId1);
         TM.getTask(taskId1);
+        TM.getEpic(epicId1);
         TM.getEpic(epicId2);
+        TM.getEpic(epicId3);
+        TM.getEpic(epicId1);
+        TM.getEpic(epicId3);
+        TM.getEpic(epicId3);
+        TM.getEpic(epicId1);
+        TM.getEpic(epicId1);
+        TM.getEpic(epicId1);
+        TM.getEpic(epicId1);
+        TM.getEpic(epicId3);
+        TM.getEpic(epicId3);
         TM.getSubtask(subtaskId2);
         TM.getTask(taskId1);
 
@@ -104,6 +112,7 @@ public class Main {
         TM.getSubtask(subtaskId1);
         TM.getTask(taskId3);
         TM.getEpic(epicId2);
+        TM.getEpic(epicId3);
         TM.getSubtask(subtaskId2);
         TM.getTask(taskId4);
 

@@ -1,29 +1,30 @@
 package manager.history;
 
+import task.Task;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class InMemoryHistoryManager<T> implements HistoryManager<T>{
-
-    ArrayList<T> historyTasks = new ArrayList<T>();
-    int historyListLimitValue;
-
-    public InMemoryHistoryManager (int maxSize){
-        this.historyListLimitValue = maxSize;
-    }
+public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T>{
+    HashMap<Integer, Node> nodeList = new HashMap<>();
+    DoubleLinkedList linkedList = new DoubleLinkedList();
 
     public void addTaskToHistory (T task){
-        // прошу прощения, тупая привычка не ставить скобки + в моей практике обычно линтер все за меня делает) , хотел уточнить, а какой линтер лучше всего в использовать для java
-        if(task == null) { return; }
+        int taskId = task.getId();
 
-        int size = this.historyTasks.size();
-        this.historyTasks.add(task);
-
-        if(size >= this.historyListLimitValue) {
-            this.historyTasks.remove(0);
+        if(this.nodeList.containsKey(taskId)){
+            removeTaskFromHistory(taskId);
         }
+
+        Node addNode = linkedList.addLastToList(task);
+        this.nodeList.put(taskId, addNode);
+    }
+
+    public void removeTaskFromHistory(Integer taskId){
+        Node removedNode = this.nodeList.remove(taskId);
+        this.linkedList.removeFromList(removedNode);
     }
 
     public ArrayList<T> getTasksHistory(){
-       return this.historyTasks;
+        return this.linkedList.getList();
     }
 }
