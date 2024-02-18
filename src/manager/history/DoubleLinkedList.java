@@ -29,6 +29,10 @@ public class DoubleLinkedList<T extends Task> {
     }
 
     public void removeFromList(Node node) {
+        if(node == null) {
+            return;
+        }
+
         Node prev = node.prev;
         Node next = node.next;
 

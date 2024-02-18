@@ -233,6 +233,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    public void removeHistoryTask(Integer id){
+        HM.removeTaskFromHistory(id);
+    }
+
     public ArrayList<Task> getHistory(){
         return HM.getTasksHistory();
     }
