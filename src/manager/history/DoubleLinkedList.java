@@ -9,20 +9,20 @@ public class DoubleLinkedList<T extends Task> {
     private Node<T> tailOfList;
     private int sizeList;
 
+    private boolean isEmptyList() {
+        return sizeList == 0;
+    }
+
     public Node addLastToList(T task) {
-        final Node<T> oldTail = tailOfList;
         final Node<T> newNode = new Node<>(tailOfList, task, null);
 
-        tailOfList = newNode;
-
-        if (oldTail == null){
+        if (headOfList == null) {
             headOfList = newNode;
+        } else {
+            tailOfList.next = newNode;
         }
 
-        else{
-            oldTail.next = newNode;
-        }
-
+        tailOfList = newNode;
         sizeList++;
 
         return newNode;
@@ -58,10 +58,6 @@ public class DoubleLinkedList<T extends Task> {
         Node current = headOfList;
         ArrayList<Task> historyList = new ArrayList<>();
 
-        if(headOfList == null) {
-            return null;
-        }
-
         while(current != null) {
             historyList.add(current.data);
             current = current.next;
@@ -70,7 +66,7 @@ public class DoubleLinkedList<T extends Task> {
         return historyList;
     }
 
-    public boolean isEmptyList() {
-        return sizeList == 0;
+    public int getSize(){
+        return sizeList;
     }
 }

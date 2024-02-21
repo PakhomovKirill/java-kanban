@@ -30,8 +30,7 @@ class InMemoryHistoryManagerTest {
         TM.getTask(taskId1);
 
         ArrayList<Task> historyList = TM.getHistory();
-
-        assertNotEquals(historyList.get(0), historyList.get(1), "Задачи не должны быть равны равны.");
+        assertNotEquals(historyList.size(), 2, "Лист не может содержать 2 обектов с идентичным id");
     }
 
     @Test
@@ -44,7 +43,9 @@ class InMemoryHistoryManagerTest {
 
         TM.removeHistoryTask(taskId1);
 
-        assertNull(TM.getHistory(),"Задача не удалена из истории");
+        ArrayList<Task> historyList = TM.getHistory();
+
+        assertNotEquals(1,historyList.size(),"Задача не удалена из истории");
     }
 
     @Test
@@ -63,6 +64,6 @@ class InMemoryHistoryManagerTest {
         Node removedNode = nodeList.remove(taskId1);
         linkedList.removeFromList(removedNode);
 
-        assertNull(linkedList.getList(),"Узел не удален из списка");
+        assertNotEquals(1, linkedList.getSize(),"Узел не удален из списка");
     }
 }
