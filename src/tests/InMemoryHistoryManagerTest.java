@@ -1,12 +1,15 @@
 package tests;
 
 import manager.Managers;
+import manager.history.DoubleLinkedList;
+import manager.history.Node;
 import manager.task.TaskManager;
 import org.junit.jupiter.api.Test;
 import task.Task;
 import utils.Enums;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,8 +30,40 @@ class InMemoryHistoryManagerTest {
         TM.getTask(taskId1);
 
         ArrayList<Task> historyList = TM.getHistory();
-
-        assertNotEquals(historyList.get(0), historyList.get(1), "Задачи не должны быть равны равны.");
+        assertNotEquals(historyList.size(), 2, "Лист не может содержать 2 обектов с идентичным id");
     }
 
+    @Test
+    public void RemoveItemFromHistoryList(){
+        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
+        final int taskId1 = TM.addNewTask(task1);
+        TM.getTask(taskId1);
+
+        assertNotNull(TM.getHistory().get(0),"Задача не добавлена в историю");
+
+        TM.removeHistoryTask(taskId1);
+
+        ArrayList<Task> historyList = TM.getHistory();
+
+        assertNotEquals(1,historyList.size(),"Задача не удалена из истории");
+    }
+
+    @Test
+    public void RemoveItemFromLinkedList(){
+        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
+        final int taskId1 = TM.addNewTask(task1);
+
+        HashMap<Integer, Node> nodeList = new HashMap<>();
+        DoubleLinkedList linkedList = new DoubleLinkedList();
+
+        Node addNode = linkedList.addLastToList(task1);
+        nodeList.put(taskId1, addNode);
+
+        assertNotNull(linkedList,"Узел не добавлен в список");
+
+        Node removedNode = nodeList.remove(taskId1);
+        linkedList.removeFromList(removedNode);
+
+        assertNotEquals(1, linkedList.getSize(),"Узел не удален из списка");
+    }
 }

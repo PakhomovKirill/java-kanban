@@ -48,4 +48,6 @@ public interface TaskManager {
 
     public ArrayList<Task> getHistory();
 
+    public void removeHistoryTask(Integer id);
+
 }
