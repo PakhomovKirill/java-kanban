@@ -27,12 +27,13 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        String result = "Subtask{" +
-                "id='" + this.getId() + '\'' +
-                "parentId='" + this.getParentId() + '\'' +
-                "status='" + this.getStatus() + '\'' +
-                ",title='" + this.getTitle() + '\'' +
-                ",description=" + this.getDescription() + '}';
+        String result =
+                this.getId() +
+                ",SUBTASK" +
+                "," + this.getTitle() +
+                "," + this.getStatus() +
+                "," + this.getDescription() +
+                "," + this.getParentId();
 
         return result;
     }

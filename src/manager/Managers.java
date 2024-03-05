@@ -4,6 +4,7 @@ import manager.task.InMemoryTaskManager;
 import manager.history.InMemoryHistoryManager;
 import manager.task.TaskManager;
 import manager.history.HistoryManager;
+import manager.task.FileBackedTaskManager;
 
 public class Managers {
     public TaskManager getDefault() {
@@ -11,5 +12,9 @@ public class Managers {
     }
     public HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
+    }
+
+    public FileBackedTaskManager getFileBackedTaskManager(){
+        return new FileBackedTaskManager();
     }
 }

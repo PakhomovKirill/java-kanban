@@ -40,13 +40,15 @@ public class Epic extends Task {
 
   @Override
   public String toString() {
-    String result = "Epic{" +
-            "id='" + this.getId()+ '\'' +
-            "status='" + this.getStatus() + '\'' +
-            ",title='" + this.getTitle() + '\'' +
-            ",description=" + this.getDescription() + '\'';
+    String result =
+            + this.getId()+
+            ",EPIC"+
+            "," + this.getTitle()+
+            "," + this.getStatus() +
+            "," + this.getDescription() +
+            ",null";
 
-    return result + ",tasks=" + this.getAllChildrenList().toString() + '}';
+    return result + "," + this.getAllChildrenList().toString() + "";
   }
 
   @Override

@@ -55,11 +55,13 @@ public class Task {
 
     @Override
     public String toString() {
-        String result = "Subtask{" +
-                "id='" + this.getId() + '\'' +
-                "status='" + this.getStatus() + '\'' +
-                ",title='" + this.getTitle() + '\'' +
-                ",description=" + this.getDescription() + '}';
+        String result =
+                this.getId()+
+                ",TASK"+
+                "," + this.getTitle()+
+                "," + this.getStatus() +
+                "," + this.getDescription() +
+                ",null";
 
         return result;
     }

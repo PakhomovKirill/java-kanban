@@ -30,7 +30,7 @@ public interface TaskManager {
 
     public Integer updateTask(Task task);
 
-    public void updateEpic(Epic epic);
+    public Integer updateEpic(Epic epic);
 
     public Integer updateSubtask(Subtask subtask);
 

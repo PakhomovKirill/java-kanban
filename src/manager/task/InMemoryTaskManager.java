@@ -147,7 +147,7 @@ public class InMemoryTaskManager implements TaskManager {
         return taskId;
     }
 
-    public void updateEpic(Epic epic) {
+    public Integer updateEpic(Epic epic) {
         Integer epicId = epic.getId();
         if(epics.containsKey(epicId)){
             Epic current = epics.get(epicId);
@@ -155,6 +155,7 @@ public class InMemoryTaskManager implements TaskManager {
             current.setTitle(epic.getTitle());
         }
 
+        return epicId;
     }
 
     public Integer updateSubtask(Subtask subtask) {

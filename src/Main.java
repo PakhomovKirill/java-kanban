@@ -9,8 +9,11 @@ public class Main {
 
     private static TaskManager TM;
     private static Managers Manager = new Managers();
+
     public static void main(String[] args) {
-        TM = Manager.getDefault();
+        TM = Manager.getFileBackedTaskManager();
+
+        printAllTasks(TM);
 
         create();
     }
@@ -121,14 +124,6 @@ public class Main {
         TM.deleteTask(taskId1);
         TM.deleteSubtask(subtaskId3);
         TM.deleteEpic(epicId1);
-
-        printAllTasks(TM);
-
-        //Удаление
-        System.out.println("" + '\n' + '\n' + "Удаление" + '\n' + '\n');
-        TM.deleteEpics();
-        TM.deleteSubtasks();
-        TM.deleteTasks();
 
         printAllTasks(TM);
 
