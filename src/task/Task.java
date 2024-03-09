@@ -1,9 +1,11 @@
 package task;
 
 import utils.Enums.TaskStatus;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class Task {
+public class Task extends ArrayList<Task> {
     public String title;
     public String description;
     public Integer id;

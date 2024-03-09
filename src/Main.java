@@ -11,7 +11,7 @@ public class Main {
     private static Managers Manager = new Managers();
 
     public static void main(String[] args) {
-        TM = Manager.getFileBackedTaskManager();
+        TM = Manager.getDefault();
 
         printAllTasks(TM);
 

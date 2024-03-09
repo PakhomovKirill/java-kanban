@@ -11,8 +11,6 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager{
 
@@ -22,28 +20,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private static FileUtil fileUtil = new FileUtil();
     public FileBackedTaskManager(){
         super();
-        parseCsvFile();
+        try {
+            parseCsvFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private ArrayList<String[]> builtListToCsvTable(ArrayList<Task> list){
-      String[] headers = new String[Enums.csvTableHeaders.values().length];
-      ArrayList<String[]> csvList = new ArrayList<>();
-
-      for(Enums.csvTableHeaders value: Enums.csvTableHeaders.values()){
-          headers[value.ordinal()] = value.toString();
-      }
-
-      csvList.add(headers);
-
-      for (Task item: list){
-          String[] rowArray = Arrays.copyOfRange(item.toString().split(","), 0, Enums.csvTableHeaders.values().length);
-          csvList.add(rowArray);
-      }
-
-      return csvList;
-    }
-
-    public void parseCsvFile(){
+    public void parseCsvFile() throws ManagerSaveException {
         if(fileUtil.fileIsExist(path)){
           try {
               File file = new File(path.toFile().toURI());
@@ -52,26 +36,33 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
               csvList.remove(0);
 
               for (String[] item: csvList){
-                  Enums.TasksType key = item[1] != null ? Enums.TasksType.valueOf(item[1]) : null;
+                  final Integer id = Integer.parseInt(item[0]);
+                  final Enums.TasksType type = Enums.TasksType.valueOf(item[1]);
+                  final String name = item[2];
+                  final String status = item[3];
+                  final String description = item[4];
+                  final String epicId = item[5] != null ? item[5] : null;
+
+                  Enums.TasksType key = id != null ? type : null;
 
                   switch (key){
                       case EPIC:
                           {
-                              Epic epic = new Epic(item[2], item[4]);
+                              Epic epic = new Epic(name, description);
                               super.addNewEpic(epic);
                           }
                           break;
                       case SUBTASK:
                           {
-                              if(item[5] != null){
-                                  Subtask subtask = new Subtask(item[2], item[4], Enums.TaskStatus.valueOf(item[3]), Integer.parseInt(item[5]));
+                              if(epicId  != null){
+                                  Subtask subtask = new Subtask(name, description, Enums.TaskStatus.valueOf(status), Integer.parseInt(epicId));
                                   super.addNewSubtask(subtask);
                               }
                           }
                           break;
                       case TASK:
                           {
-                              Task task = new Task(item[2], item[4], Enums.TaskStatus.valueOf(item[3]));
+                              Task task = new Task(name, description, Enums.TaskStatus.valueOf(status));
                               super.addNewTask(task);
                           }
                           break;
@@ -80,23 +71,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                   }
               }
             } catch (ManagerSaveException e){
-              System.out.println(e.getDetailMessage());
+              throw new ManagerSaveException(e.getMessage());
             } catch (Exception e){
-              System.out.println(e.getMessage());
+              throw new ManagerSaveException(e.getMessage());
             }
         }
     }
 
-    private void saveToFile() {
+    private void saveToFile() throws ManagerSaveException {
         ArrayList<Task> tasks = super.getTasks();
         ArrayList<Epic> epics = super.getEpics();
         ArrayList<Subtask> subtasks = super.getSubtasks();
-        ArrayList<Task> concatTasksList = new ArrayList<>();
+        String[] headers = new String[Enums.csvTableHeaders.values().length];
 
-        List<ArrayList<? extends Task>> fullList = Arrays.asList(tasks,epics,subtasks);
-
-        for(ArrayList<? extends Task> item: fullList){
-            concatTasksList.addAll(item);
+        for(Enums.csvTableHeaders value: Enums.csvTableHeaders.values()){
+            headers[value.ordinal()] = value.toString();
         }
 
         try {
@@ -104,11 +93,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                 fileUtil.fileCreate(path);
             }
 
-            fileUtil.fileWrite(path, builtListToCsvTable(concatTasksList));
+            fileUtil.fileWrite(path, tasks, epics, subtasks, headers);
         } catch (ManagerSaveException e){
-            System.out.println(e.getDetailMessage());
+            throw new ManagerSaveException(e.getMessage());
         }
-
     }
 
     // получение
@@ -149,79 +137,127 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     // создание
-    public int addNewTask(Task task) {
+    public int addNewTask(Task task)  {
         int taskId = super.addNewTask(task);
-        saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
 
         return taskId;
     }
 
     public int addNewEpic(Epic epic) {
       int epicId = super.addNewEpic(epic);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
 
-      return epicId;
+        return epicId;
     }
 
     public Integer addNewSubtask(Subtask subtask) {
       Integer subtaskId = super.addNewSubtask(subtask);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
 
-      return subtaskId;
+        return subtaskId;
     }
 
     // обновление
     public Integer updateTask(Task task) {
       Integer taskId = super.updateTask(task);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
 
-      return taskId;
+        return taskId;
     }
 
     public Integer updateEpic(Epic epic) {
       Integer epicId = super.updateEpic(epic);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
 
-      return epicId;
+        return epicId;
     }
 
     public Integer updateSubtask(Subtask subtask) {
       Integer subtaskId = super.updateSubtask(subtask);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
 
-      return subtaskId;
+        return subtaskId;
     }
 
     // удаление
     public void deleteTasks() {
       super.deleteTasks();
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteSubtasks() {
       super.deleteSubtasks();
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteEpics() {
       super.deleteEpics();
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // удаление по id
     public void deleteTask(int id) {
       super.deleteTask(id);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteEpic(int id) {
       super.deleteEpic(id);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteSubtask(int id) {
       super.deleteSubtask(id);
-      saveToFile();
+        try {
+            saveToFile();
+        } catch (ManagerSaveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void removeHistoryTask(Integer id){

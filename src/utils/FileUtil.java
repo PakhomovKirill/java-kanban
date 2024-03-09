@@ -4,6 +4,10 @@ import java.nio.file.*;
 import java.io.*;
 import java.util.ArrayList;
 import exception.ManagerSaveException;
+import task.Epic;
+import task.Subtask;
+import task.Task;
+import java.util.Arrays;
 
 public class FileUtil {
 
@@ -22,29 +26,31 @@ public class FileUtil {
 
         return file;
     }
-
-    public void fileWrite(Path path, ArrayList<String[]> csvList) throws ManagerSaveException{
+    public void fileWrite(Path path,
+                          ArrayList<Task> tasks,
+                          ArrayList<Epic> epics,
+                          ArrayList<Subtask> subtasks,
+                          String[] headers) throws ManagerSaveException{
         clearFile(path);
 
         try(FileWriter fileWriter = new FileWriter(path.toFile())) {
-            for (String[] data : csvList) {
 
-                StringBuilder line = new StringBuilder();
+            fileWriter.write(String.join(",", headers));
+            fileWriter.write( "\n");
 
-                for (int i = 0; i < data.length; i++) {
-                    if(data[i] != null){
-                        line.append(data[i].replaceAll("\"","\"\""));
-                    }
-
-                    if (i != data.length - 1) {
-                        line.append(',');
-                    }
-                }
-
-                line.append("\n");
-
-                fileWriter.write(line.toString());
+            for (Task task : tasks) {
+                fileWriter.write(task.toString() + "\n");
             }
+
+            for (Epic epic : epics) {
+                String[] EpicArray = Arrays.copyOfRange(epic.toString().split(","), 0, headers.length);
+                fileWriter.write(String.join(",", EpicArray) + "\n");
+            }
+
+            for (Subtask subtask : subtasks) {
+                fileWriter.write(subtask.toString() + "\n");
+            }
+
             fileWriter.close();
         }
         catch (IOException e) {
