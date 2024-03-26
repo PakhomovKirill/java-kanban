@@ -125,7 +125,6 @@ public class Main {
         System.out.println("" + '\n' + '\n' + "Удаление по id " + '\n' + '\n');
         TM.deleteTask(taskId1);
         TM.deleteSubtask(subtaskId3);
-        //TM.deleteEpic(epicId1);
 
         printAllTasks(TM);
 
