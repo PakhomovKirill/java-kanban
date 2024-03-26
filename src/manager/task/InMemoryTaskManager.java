@@ -27,9 +27,9 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager = managers.getDefaultHistory();
     }
 
-    public void parseTaskByTimestampValue(Enums.TaskActionType type, Object...args){
+    public void parseTaskByTimestampValue(Enums.TaskActionType type, Object...args) {
 
-        switch (type){
+        switch (type) {
             case REMOVE:
                 Integer id = (Integer) List.of(args).get(0);
                 uniqueTimestampTaskList.values().stream().filter(task -> task.getId() != id);
@@ -50,10 +50,10 @@ public class InMemoryTaskManager implements TaskManager {
             case UPDATE_TASK_BY_ID:
                 try {
                     Task task = (Task) List.of(args).get(0);
-                    if(this.uniqueTimestampTaskList.containsKey(task.getStartTimeToSeconds())){
+                    if (this.uniqueTimestampTaskList.containsKey(task.getStartTimeToSeconds())) {
                         this.uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
                     }
-                } catch (IllegalStateException error){
+                } catch (IllegalStateException error) {
                     // println тк необходимо не останавливать выполнение потока программы
                     // throw new CustomTaskManagerException(error.getMessage());
                    System.out.println(error);
@@ -62,7 +62,7 @@ public class InMemoryTaskManager implements TaskManager {
             case CHECK_TO_UNIQUE_TIMESTAMP:
                 try {
                     setUniqueTimestampTask((Task) List.of(args).get(0));
-                } catch (IllegalStateException error){
+                } catch (IllegalStateException error) {
                     // println тк необходимо не останавливать выполнение потока программы
                     // throw new CustomTaskManagerException(error.getMessage());
                     System.out.println(error);
@@ -76,13 +76,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-    private boolean checkToUniqueTimeStamp(Task currentTask, Task newTask){
+    private boolean checkToUniqueTimeStamp(Task currentTask, Task newTask) {
         long  currentTaskEndTime = currentTask.getEndTimeToSeconds();
         long  newTaskStartTime = newTask.getStartTimeToSeconds();
 
         return currentTaskEndTime > newTaskStartTime ? true : false;
     }
-    private void setUniqueTimestampTask(Task task){
+    private void setUniqueTimestampTask(Task task) {
 
         if (task == null) {
             throw new IllegalStateException("Таск не существует");
@@ -113,7 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .collect(Collectors.toList());
     }
 
-    private void updateEpicStatus(Integer epicId){
+    private void updateEpicStatus(Integer epicId) {
         if (epicId == null) {
             return;
         }
