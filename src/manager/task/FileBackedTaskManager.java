@@ -11,6 +11,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager{
 
@@ -56,6 +57,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                           {
                               if(epicId  != null){
                                   Subtask subtask = new Subtask(name, description, Enums.TaskStatus.valueOf(status), Integer.parseInt(epicId));
+                                  System.out.println(subtask.getId());
                                   super.addNewSubtask(subtask);
                               }
                           }
@@ -78,11 +80,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
     }
 
-    private void saveToFile() throws ManagerSaveException {
+    private void saveToFile(Enums.TaskActionType type, Object ...args) throws ManagerSaveException {
+
         ArrayList<Task> tasks = super.getTasks();
         ArrayList<Epic> epics = super.getEpics();
         ArrayList<Subtask> subtasks = super.getSubtasks();
         String[] headers = new String[Enums.csvTableHeaders.values().length];
+
+        super.parseTaskByTimestampValue(type, args);
 
         for(Enums.csvTableHeaders value: Enums.csvTableHeaders.values()){
             headers[value.ordinal()] = value.toString();
@@ -140,7 +145,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public int addNewTask(Task task)  {
         int taskId = super.addNewTask(task);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP , task);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -151,7 +156,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public int addNewEpic(Epic epic) {
       int epicId = super.addNewEpic(epic);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, epic);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -162,7 +167,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public Integer addNewSubtask(Subtask subtask) {
       Integer subtaskId = super.addNewSubtask(subtask);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, subtask);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -174,7 +179,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public Integer updateTask(Task task) {
       Integer taskId = super.updateTask(task);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, task);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -185,7 +190,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public Integer updateEpic(Epic epic) {
       Integer epicId = super.updateEpic(epic);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, epic);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -196,7 +201,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public Integer updateSubtask(Subtask subtask) {
       Integer subtaskId = super.updateSubtask(subtask);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, subtask);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -208,7 +213,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void deleteTasks() {
       super.deleteTasks();
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.REMOVE_ALL_TASKS);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -217,7 +222,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void deleteSubtasks() {
       super.deleteSubtasks();
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.REMOVE_ALL_SUBTASKS);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -226,7 +231,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void deleteEpics() {
       super.deleteEpics();
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.REMOVE_ALL_EPICS);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -236,7 +241,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void deleteTask(int id) {
       super.deleteTask(id);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.REMOVE, id);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -245,7 +250,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void deleteEpic(int id) {
       super.deleteEpic(id);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.REMOVE, id);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -254,7 +259,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public void deleteSubtask(int id) {
       super.deleteSubtask(id);
         try {
-            saveToFile();
+            saveToFile(Enums.TaskActionType.REMOVE, id);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -266,5 +271,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     public ArrayList<Task> getHistory(){
       return super.getHistory();
+    }
+
+    public List<Task> getPrioritizedTasks(){
+        return super.getPrioritizedTasks();
     }
 }

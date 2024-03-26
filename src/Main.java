@@ -5,6 +5,8 @@ import task.Subtask;
 import task.Task;
 import utils.Enums;
 
+import java.time.Duration;
+
 public class Main {
 
     private static TaskManager TM;
@@ -42,7 +44,7 @@ public class Main {
         System.out.println("" + '\n' + '\n' +  "Создание " + '\n' + '\n');
 
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
-        Task task2 = new Task("Task #2", "Task2 description", Enums.TaskStatus.IN_PROGRESS);
+        Task task2 = new Task("Task #2", "Task2 description", Enums.TaskStatus.IN_PROGRESS, "12.03.24 12:30", Duration.ofHours(2));
         final int taskId1 = TM.addNewTask(task1);
         final int taskId2 = TM.addNewTask(task2);
 
@@ -53,13 +55,13 @@ public class Main {
         final int epicId2 = TM.addNewEpic(epic2);
         final int epicId3 = TM.addNewEpic(epic3);
 
-        Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", Enums.TaskStatus.NEW, epicId1);
+        Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", Enums.TaskStatus.NEW, epicId1, "12.03.24 12:30", Duration.ofHours(2));
         Subtask subtask2 = new Subtask("Subtask #2-1", "Subtask2 description", Enums.TaskStatus.IN_PROGRESS, epicId1);
-        Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask3 description", Enums.TaskStatus.NEW, epicId2);
-        Subtask subtask4 = new Subtask("Subtask #4-2", "Subtask4 description", Enums.TaskStatus.NEW, epicId2);
+        Subtask subtask3 = new Subtask("Subtask #3-2", "Subtask3 description", Enums.TaskStatus.NEW, epicId2, "12.03.24 13:30", Duration.ofHours(2));
+        Subtask subtask4 = new Subtask("Subtask #4-2", "Subtask4 description", Enums.TaskStatus.NEW, epicId2,  "12.03.24 16:30", Duration.ofHours(2));
         Subtask subtask5 = new Subtask("Subtask #5-2", "Subtask5 description", Enums.TaskStatus.NEW, epicId2);
         Subtask subtask6 = new Subtask("Subtask #6-2", "Subtask6 description", Enums.TaskStatus.NEW, epicId2);
-        Subtask subtask7 = new Subtask("Subtask #7-2", "Subtask7 description", Enums.TaskStatus.NEW, epicId2);
+        Subtask subtask7 = new Subtask("Subtask #7-2", "Subtask7 description", Enums.TaskStatus.NEW, epicId1, "14.03.24 12:30", Duration.ofHours(2));
 
         final Integer subtaskId1 = TM.addNewSubtask(subtask1);
         final Integer subtaskId2 = TM.addNewSubtask(subtask2);
@@ -123,15 +125,23 @@ public class Main {
         System.out.println("" + '\n' + '\n' + "Удаление по id " + '\n' + '\n');
         TM.deleteTask(taskId1);
         TM.deleteSubtask(subtaskId3);
-        TM.deleteEpic(epicId1);
+        //TM.deleteEpic(epicId1);
 
         printAllTasks(TM);
 
-        //Обновление
+        //История
         System.out.println("" + '\n' + '\n' + "История " + '\n' + '\n');
 
         System.out.println("История:");
         for (Task task : TM.getHistory()) {
+            System.out.println(task.toString());
+        }
+
+        //Таски сортированные по времени начала выполнения
+        System.out.println("" + '\n' + '\n' + "Время начала исполнения " + '\n' + '\n');
+
+        System.out.println("Время начала исполнения:");
+        for (Task task : TM.getPrioritizedTasks()) {
             System.out.println(task.toString());
         }
 

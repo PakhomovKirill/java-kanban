@@ -13,7 +13,9 @@ public class Enums {
         name,
         status,
         description,
-        epic
+        epic,
+        startTime,
+        endTime
     }
 
     public enum TasksType{
@@ -22,7 +24,27 @@ public class Enums {
         TASK
     }
 
-    public enum TaskManagerClassTypes {
-        DEFAULT
+    public enum TaskActionType{
+        REMOVE,
+        CHECK_TO_UNIQUE_TIMESTAMP,
+        REMOVE_ALL_TASKS,
+        REMOVE_ALL_SUBTASKS,
+        REMOVE_ALL_EPICS,
+        UPDATE_TASK_BY_ID
+    }
+
+    public enum TimeEnum {
+        DATE_MASK {
+            @Override
+            public String toString() {
+                return "dd.MM.yy HH:mm";
+            }
+        },
+        TIMEZONE_MOSCOW {
+            @Override
+            public String toString() {
+                return "Europe/Moscow";
+            }
+        },
     }
 }

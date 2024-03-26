@@ -1,6 +1,7 @@
 package utils;
 import task.Subtask;
 import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 
 public class Utils {
     public static boolean isEpicListStatusDoneAll(ArrayList<Subtask> subtasks) {
@@ -21,5 +22,9 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static DateTimeFormatter dateTimeFormatter(Enums.TimeEnum dateTimeFormat) {
+       return DateTimeFormatter.ofPattern(dateTimeFormat.toString());
     }
 }

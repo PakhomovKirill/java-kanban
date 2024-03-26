@@ -1,6 +1,6 @@
 package task;
 import utils.Enums;
-
+import java.time.Duration;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -9,12 +9,27 @@ public class Subtask extends Task {
     public Subtask(String title, String description, Enums.TaskStatus status, Integer parentId){
         super(title, description, status);
         this.parentId = parentId;
+        super.setTaskType(Enums.TasksType.SUBTASK);
     }
 
     public Subtask(String title, String description, Enums.TaskStatus status, Integer parentId, Integer subtaskId){
         super(title, description, status);
         this.setId(subtaskId);
         this.parentId = parentId;
+        super.setTaskType(Enums.TasksType.SUBTASK);
+    }
+
+    public Subtask(String title, String description, Enums.TaskStatus status, Integer parentId, String startTime, Duration taskEstimateDuration){
+        super(title, description, status, startTime, taskEstimateDuration);
+        this.parentId = parentId;
+        super.setTaskType(Enums.TasksType.SUBTASK);
+    }
+
+    public Subtask(String title, String description, Enums.TaskStatus status, Integer parentId, Integer subtaskId, String startTime, Duration taskEstimateDuration){
+        super(title, description, status, startTime, taskEstimateDuration);
+        this.setId(subtaskId);
+        this.parentId = parentId;
+        super.setTaskType(Enums.TasksType.SUBTASK);
     }
 
     public void setParentId(int parentId){
@@ -29,11 +44,13 @@ public class Subtask extends Task {
     public String toString() {
         String result =
                 this.getId() +
-                ",SUBTASK" +
+                ","+ this.getTaskType() +
                 "," + this.getTitle() +
                 "," + this.getStatus() +
                 "," + this.getDescription() +
-                "," + this.getParentId();
+                "," + this.getParentId() +
+                "," + this.getStartTimeFormatted() +
+                "," + this.getEndTimeFormatted();
 
         return result;
     }
