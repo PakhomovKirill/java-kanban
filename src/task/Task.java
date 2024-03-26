@@ -90,7 +90,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     }
 
     public Long getEndTimeToSeconds() {
-        if(this.endTime != null) {
+        if (this.endTime != null) {
             return this.endTime.toEpochSecond();
         }
 
