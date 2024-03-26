@@ -98,7 +98,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     }
 
     public Long getStartTimeToSeconds() {
-        if(this.startTime != null) {
+        if (this.startTime != null) {
             return this.startTime.toEpochSecond();
         }
 
@@ -106,7 +106,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     }
 
     public ZonedDateTime getStartTime() {
-        if(this.startTime != null) {
+        if (this.startTime != null) {
             return this.startTime;
         }
 
@@ -114,7 +114,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     }
 
     public ZonedDateTime getEndTime() {
-        if(this.endTime != null) {
+        if (this.endTime != null) {
             return this.endTime;
         }
 
@@ -122,7 +122,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     }
 
     public String getStartTimeFormatted() {
-        if(this.startTime != null) {
+        if (this.startTime != null) {
             return this.startTime.format(Utils.dateTimeFormatter(Enums.TimeEnum.DATE_MASK));
         }
 
@@ -130,7 +130,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     }
 
     public String getEndTimeFormatted() {
-        if(this.endTime != null) {
+        if (this.endTime != null) {
             return this.endTime.format(Utils.dateTimeFormatter(Enums.TimeEnum.DATE_MASK));
         }
 
