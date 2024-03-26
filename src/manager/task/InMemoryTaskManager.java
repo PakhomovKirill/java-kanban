@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private HistoryManager<Task> HistoryManagerClass;
-    private Managers ManagersClass = new Managers();
+    private HistoryManager<Task> historyManager;
+    private Managers managers = new Managers();
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -24,7 +24,7 @@ public class InMemoryTaskManager implements TaskManager {
     private int generatorId = 0;
 
     public InMemoryTaskManager() {
-        HistoryManagerClass = ManagersClass.getDefaultHistory();
+        historyManager = managers.getDefaultHistory();
     }
 
     public void parseTaskByTimestampValue(Enums.TaskActionType type, Object ...args){
@@ -159,8 +159,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         Task currentTask = tasks.get(id);
-        if (HistoryManagerClass != null) {
-          HistoryManagerClass.addTaskToHistory(currentTask);
+        if (historyManager != null) {
+            historyManager.addTaskToHistory(currentTask);
         }
 
         return currentTask;
@@ -171,8 +171,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         Subtask currentSubtask = subtasks.get(id);
-        if (HistoryManagerClass != null) {
-            HistoryManagerClass.addTaskToHistory(currentSubtask);
+        if (historyManager != null) {
+            historyManager.addTaskToHistory(currentSubtask);
         }
 
         return subtasks.get(id);
@@ -183,8 +183,8 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         Epic currentEpic = epics.get(id);
-        if (HistoryManagerClass != null) {
-            HistoryManagerClass.addTaskToHistory(currentEpic);
+        if (historyManager != null) {
+            historyManager.addTaskToHistory(currentEpic);
         }
 
         return epics.get(id);
@@ -294,13 +294,13 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTask(int id) {
         if (tasks.containsKey(id)) {
             tasks.remove(id);
-            HistoryManagerClass.removeTaskFromHistory(id);
+            historyManager.removeTaskFromHistory(id);
         }
     }
     public void deleteEpic(int id) {
         if (epics.containsKey(id)) {
             epics.remove(id);
-            HistoryManagerClass.removeTaskFromHistory(id);
+            historyManager.removeTaskFromHistory(id);
         }
 
         subtasks.entrySet()
@@ -322,21 +322,21 @@ public class InMemoryTaskManager implements TaskManager {
 
         if (subtasks.containsKey(id)) {
             subtasks.remove(id);
-            HistoryManagerClass.removeTaskFromHistory(id);
+            historyManager.removeTaskFromHistory(id);
         }
 
         if (currentEpic.getAllChildrenList().values().size() == 0) {
             epics.remove(currentEpic.getId());
-            HistoryManagerClass.removeTaskFromHistory(currentEpic.getId());
+            historyManager.removeTaskFromHistory(currentEpic.getId());
         }
     }
 
     public void removeHistoryTask(Integer id) {
-        HistoryManagerClass.removeTaskFromHistory(id);
+        historyManager.removeTaskFromHistory(id);
     }
 
     public ArrayList<Task> getHistory() {
-        return HistoryManagerClass.getTasksHistory();
+        return historyManager.getTasksHistory();
     }
 
     public List<Task> getPrioritizedTasks() {
