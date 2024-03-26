@@ -145,8 +145,8 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     public String toString() {
         String result =
                 this.getId()+
-                ","+ this.getTaskType() +
-                ","+ this.getTitle() +
+                ","+ this.getTaskType()+
+                ","+ this.getTitle()+
                 ","+ this.getStatus() +
                 ","+ this.getDescription() +
                 ",null"+
