@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
+public class Task extends ArrayList <Task> implements Comparable <Task> {
     public String title;
     public String description;
     public TaskStatus status = TaskStatus.NEW;
@@ -22,11 +22,11 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
     private Enums.TasksType taskType = Enums.TasksType.TASK;
 
 
-    public String getTitle(){
+    public String getTitle() {
         return this.title;
     }
 
-    public String getDescription(){
+    public String getDescription() {
         return this.description;
     }
 
@@ -34,10 +34,10 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         return this.id;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
-    public TaskStatus getStatus(){
+    public TaskStatus getStatus() {
         return this.status;
     }
 
@@ -49,28 +49,28 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         this.title = title;
     }
 
-    public void setStatus(TaskStatus status){
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
-    public void setTaskType(Enums.TasksType type){
+    public void setTaskType(Enums.TasksType type) {
         this.taskType = type;
     }
 
-    public Task(String title, String description, TaskStatus status){
+    public Task(String title, String description, TaskStatus status) {
         this.description = description;
         this.title = title;
         this.status = status;
     }
 
-    public Task(String title, String description, TaskStatus status, Integer taskId){
+    public Task(String title, String description, TaskStatus status, Integer taskId) {
         this.description = description;
         this.title = title;
         this.id = taskId;
         this.status = status;
     }
 
-    public Task(String title, String description, TaskStatus status, String startTime, Duration taskEstimateDuration){
+    public Task(String title, String description, TaskStatus status, String startTime, Duration taskEstimateDuration) {
         this.description = description;
         this.title = title;
         this.status = status;
@@ -79,7 +79,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         this.endTime = this.startTime.plus(this.taskEstimateDuration);
     }
 
-    public Task(String title, String description, TaskStatus status, Integer taskId, String startTime, Duration taskEstimateDuration){
+    public Task(String title, String description, TaskStatus status, Integer taskId, String startTime, Duration taskEstimateDuration) {
         this.description = description;
         this.title = title;
         this.id = taskId;
@@ -89,7 +89,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         this.endTime = this.startTime.plus(this.taskEstimateDuration);
     }
 
-    public Long getEndTimeToSeconds(){
+    public Long getEndTimeToSeconds() {
         if(this.endTime != null){
             return this.endTime.toEpochSecond();
         }
@@ -97,7 +97,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         return null;
     }
 
-    public Long getStartTimeToSeconds(){
+    public Long getStartTimeToSeconds() {
         if(this.startTime != null){
             return this.startTime.toEpochSecond();
         }
@@ -105,7 +105,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         return null;
     }
 
-    public ZonedDateTime getStartTime(){
+    public ZonedDateTime getStartTime() {
         if(this.startTime != null){
             return this.startTime;
         }
@@ -113,7 +113,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         return null;
     }
 
-    public ZonedDateTime getEndTime(){
+    public ZonedDateTime getEndTime() {
         if(this.endTime != null){
             return this.endTime;
         }
@@ -121,7 +121,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         return null;
     }
 
-    public String getStartTimeFormatted(){
+    public String getStartTimeFormatted() {
         if(this.startTime != null){
             return this.startTime.format(Utils.dateTimeFormatter(Enums.TimeEnum.DATE_MASK));
         }
@@ -129,7 +129,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         return null;
     }
 
-    public String getEndTimeFormatted(){
+    public String getEndTimeFormatted() {
         if(this.endTime != null){
             return this.endTime.format(Utils.dateTimeFormatter(Enums.TimeEnum.DATE_MASK));
         }
@@ -137,7 +137,7 @@ public class Task extends ArrayList  <Task>  implements Comparable  <Task>  {
         return null;
     }
 
-    public String getTaskType(){
+    public String getTaskType() {
         return this.taskType.toString();
     }
 
