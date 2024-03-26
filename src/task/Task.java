@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class Task extends ArrayList <Task> implements Comparable <Task> {
+public class Task extends ArrayList
+        <Task> implements Comparable
+        <Task> {
     public String title;
     public String description;
     public TaskStatus status = TaskStatus.NEW;
@@ -37,6 +39,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     public void setId(int id) {
         this.id = id;
     }
+
     public TaskStatus getStatus() {
         return this.status;
     }
