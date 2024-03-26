@@ -143,8 +143,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
 
     @Override
     public String toString() {
-        String result =
-                this.getId() + "," + this.getTaskType() + "," + this.getTitle() + "," + this.getStatus() + "," + this.getDescription() + ",null"+ "," + this.getStartTimeFormatted() + "," + this.getEndTimeFormatted();
+        String result = this.getId() + "," + this.getTaskType() + "," + this.getTitle() + "," + this.getStatus() + "," + this.getDescription() + ",null"+ "," + this.getStartTimeFormatted() + "," + this.getEndTimeFormatted();
 
         return result;
     }
