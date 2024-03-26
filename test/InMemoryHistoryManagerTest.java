@@ -1,5 +1,3 @@
-package tests;
-
 import manager.Managers;
 import manager.history.DoubleLinkedList;
 import manager.history.Node;
@@ -11,7 +9,8 @@ import utils.Enums;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class InMemoryHistoryManagerTest {
 
