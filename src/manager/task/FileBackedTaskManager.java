@@ -30,14 +30,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     public void parseCsvFile() throws ManagerSaveException {
-        if(fileUtil.fileIsExist(path)){
+        if (fileUtil.fileIsExist(path)) {
           try {
               File file = new File(path.toFile().toURI());
               ArrayList<String[]> csvList;
               csvList = fileUtil.loadFromFile(file);
               csvList.remove(0);
 
-              for (String[] item: csvList){
+              for (String[] item: csvList) {
                   final Integer id = Integer.parseInt(item[0]);
                   final Enums.TasksType type = Enums.TasksType.valueOf(item[1]);
                   final String name = item[2];
@@ -47,14 +47,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
                   Enums.TasksType key = id != null ? type : null;
 
-                  switch (key){
+                  switch (key) {
                       case EPIC: {
                               Epic epic = new Epic(name, description);
                               super.addNewEpic(epic);
                           }
                           break;
                       case SUBTASK: {
-                              if(epicId  != null){
+                              if (epicId  != null) {
                                   Subtask subtask = new Subtask(name, description, Enums.TaskStatus.valueOf(status), Integer.parseInt(epicId));
                                   super.addNewSubtask(subtask);
                               }
@@ -69,15 +69,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                           break;
                   }
               }
-            } catch (ManagerSaveException e){
+            } catch (ManagerSaveException e) {
               throw new ManagerSaveException(e.getMessage());
-            } catch (Exception e){
+            } catch (Exception e) {
               throw new ManagerSaveException(e.getMessage());
             }
         }
     }
 
-    private void saveToFile(Enums.TaskActionType type, Object ...args) throws ManagerSaveException {
+    private void saveToFile(Enums.TaskActionType type, Object...args) throws ManagerSaveException {
 
         ArrayList<Task> tasks = super.getTasks();
         ArrayList<Epic> epics = super.getEpics();
@@ -86,12 +86,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
         super.parseTaskByTimestampValue(type, args);
 
-        for(Enums.csvTableHeaders value: Enums.csvTableHeaders.values()){
+        for (Enums.csvTableHeaders value: Enums.csvTableHeaders.values()) {
             headers[value.ordinal()] = value.toString();
         }
 
         try {
-            if(!fileUtil.fileIsExist(path)){
+            if (!fileUtil.fileIsExist(path)) {
                 fileUtil.fileCreate(path);
             }
 
@@ -142,7 +142,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public int addNewTask(Task task)  {
         int taskId = super.addNewTask(task);
         try {
-            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP , task);
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, task);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -262,15 +262,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
     }
 
-    public void removeHistoryTask(Integer id){
+    public void removeHistoryTask(Integer id) {
       super.removeHistoryTask(id);
     }
 
-    public ArrayList<Task> getHistory(){
+    public ArrayList<Task> getHistory() {
       return super.getHistory();
     }
 
-    public List<Task> getPrioritizedTasks(){
+    public List<Task> getPrioritizedTasks() {
         return super.getPrioritizedTasks();
     }
 }
