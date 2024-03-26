@@ -3,7 +3,7 @@ package manager.task;
 import task.Epic;
 import task.Subtask;
 import task.Task;
-
+import java.util.List;
 import java.util.ArrayList;
 
 public interface TaskManager {
@@ -30,7 +30,7 @@ public interface TaskManager {
 
     public Integer updateTask(Task task);
 
-    public void updateEpic(Epic epic);
+    public Integer updateEpic(Epic epic);
 
     public Integer updateSubtask(Subtask subtask);
 
@@ -49,5 +49,7 @@ public interface TaskManager {
     public ArrayList<Task> getHistory();
 
     public void removeHistoryTask(Integer id);
+
+    public List<Task> getPrioritizedTasks();
 
 }

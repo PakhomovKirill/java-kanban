@@ -49,7 +49,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void RemoveItemFromLinkedList(){
+    public void RemoveItemFromLinkedListTest(){
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
         final int taskId1 = TM.addNewTask(task1);
 
@@ -65,5 +65,16 @@ class InMemoryHistoryManagerTest {
         linkedList.removeFromList(removedNode);
 
         assertNotEquals(1, linkedList.getSize(),"Узел не удален из списка");
+    }
+
+    @Test
+    public void TasksDoublesInHistoryTest(){
+        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
+
+        final int taskId1 = TM.addNewTask(task1);
+        TM.getTask(taskId1);
+        TM.getTask(taskId1);
+
+        assertNotEquals(2, TM.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
     }
 }

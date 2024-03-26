@@ -1,17 +1,46 @@
 package task;
 import utils.Enums;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class Epic extends Task {
   private HashMap<Integer, Subtask> childList = new HashMap<>();
 
   public Epic(String title, String description){
     super(title, description, Enums.TaskStatus.NEW);
+    super.setTaskType(Enums.TasksType.EPIC);
+
+    setEndStartTime();
   }
 
   public Epic(String title, String description, Integer taskId){
     super(title, description, Enums.TaskStatus.NEW, taskId);
+    super.setTaskType(Enums.TasksType.EPIC);
+
+    setEndStartTime();
+  }
+
+  private void setEndStartTime(){
+    TreeMap<Long, Task> start = new TreeMap<>();
+    TreeMap<Long,Task> end = new TreeMap<>();
+
+    if(this.childList.size() == 0){
+      return;
+    }
+
+    this.childList.values().stream().forEach(item -> {
+      Long time = item.getStartTimeToSeconds();
+      if(time != null){
+        start.put(time, item);
+        end.put(time, item);
+      }
+
+    });
+
+    ArrayList<Task> list = new ArrayList<>(end.values());
+
+    this.startTime = !start.values().stream().findFirst().isEmpty() ? start.values().stream().findFirst().get().getStartTime() : null;
+    this.startTime =  list.size() != 0 ? list.get(list.size() - 1).getEndTime() : null;
+
   }
 
   public void setStatus(Enums.TaskStatus status){
@@ -19,7 +48,10 @@ public class Epic extends Task {
   }
 
   public void setChildSubtask(Subtask subtask){
+
     this.childList.put(subtask.getId(), subtask);
+
+    setEndStartTime();
   }
 
   public void removeChildSubtask(int subtaskId){
@@ -40,13 +72,17 @@ public class Epic extends Task {
 
   @Override
   public String toString() {
-    String result = "Epic{" +
-            "id='" + this.getId()+ '\'' +
-            "status='" + this.getStatus() + '\'' +
-            ",title='" + this.getTitle() + '\'' +
-            ",description=" + this.getDescription() + '\'';
+    String result =
+            this.getId()+
+            ","+ this.getTaskType() +
+            "," + this.getTitle()+
+            "," + this.getStatus() +
+            "," + this.getDescription() +
+            ",null" +
+            "," + this.getStartTimeFormatted() +
+            "," + this.getEndTimeFormatted();
 
-    return result + ",tasks=" + this.getAllChildrenList().toString() + '}';
+    return result + "," + this.getAllChildrenList().toString() + "";
   }
 
   @Override
