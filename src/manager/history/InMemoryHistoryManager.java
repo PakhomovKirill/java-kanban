@@ -8,7 +8,7 @@ public class InMemoryHistoryManager<T extends Task> implements HistoryManager<T>
     HashMap<Integer, Node> nodeList = new HashMap<>();
     DoubleLinkedList linkedList = new DoubleLinkedList();
 
-    public void addTaskToHistory (T task) {
+    public void addTaskToHistory(T task) {
         int taskId = task.getId();
 
         if (this.nodeList.containsKey(taskId)) {
