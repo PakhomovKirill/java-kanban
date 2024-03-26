@@ -110,8 +110,8 @@ public class InMemoryTaskManager implements TaskManager {
         uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
 
         prioritizedList = Stream.concat(uniqueTimestampTaskList.values().stream(), this.epics.values().stream()
-                .filter(epic -> epic.getStartTimeToSeconds() != null ))
-                .collect(Collectors.toList());
+                .filter( epic -> epic.getStartTimeToSeconds() != null ) )
+                .collect( Collectors.toList() );
     }
 
     private void updateEpicStatus(Integer epicId) {
