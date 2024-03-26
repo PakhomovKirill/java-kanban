@@ -19,7 +19,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     private static final String HOME = System.getProperty("user.home");
     private static Path path = Paths.get(HOME, fileName);
     private static FileUtil fileUtil = new FileUtil();
-    public FileBackedTaskManager(){
+
+    public FileBackedTaskManager() {
         super();
         try {
             parseCsvFile();
@@ -47,22 +48,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                   Enums.TasksType key = id != null ? type : null;
 
                   switch (key){
-                      case EPIC:
-                          {
+                      case EPIC: {
                               Epic epic = new Epic(name, description);
                               super.addNewEpic(epic);
                           }
                           break;
-                      case SUBTASK:
-                          {
+                      case SUBTASK: {
                               if(epicId  != null){
                                   Subtask subtask = new Subtask(name, description, Enums.TaskStatus.valueOf(status), Integer.parseInt(epicId));
                                   super.addNewSubtask(subtask);
                               }
                           }
                           break;
-                      case TASK:
-                          {
+                      case TASK: {
                               Task task = new Task(name, description, Enums.TaskStatus.valueOf(status));
                               super.addNewTask(task);
                           }
