@@ -5,7 +5,7 @@ import java.util.*;
 public class Epic extends Task {
   private HashMap<Integer, Subtask> childList = new HashMap<>();
 
-  public Epic(String title, String description){
+  public Epic(String title, String description) {
     super(title, description, Enums.TaskStatus.NEW);
     super.setTaskType(Enums.TasksType.EPIC);
 
