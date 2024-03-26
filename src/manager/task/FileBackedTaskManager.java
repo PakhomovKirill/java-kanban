@@ -57,7 +57,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                           {
                               if(epicId  != null){
                                   Subtask subtask = new Subtask(name, description, Enums.TaskStatus.valueOf(status), Integer.parseInt(epicId));
-                                  System.out.println(subtask.getId());
                                   super.addNewSubtask(subtask);
                               }
                           }
