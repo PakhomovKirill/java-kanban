@@ -58,7 +58,7 @@ public class Epic extends Task {
     this.childList.remove(subtaskId);
   }
 
-  public HashMap<Integer, Subtask> getAllChildrenList () {
+  public HashMap<Integer, Subtask> getAllChildrenList() {
     return this.childList;
   }
 
@@ -72,7 +72,7 @@ public class Epic extends Task {
 
   @Override
   public String toString() {
-    String result = this.getId() + ","+ this.getTaskType() + "," + this.getTitle() + "," + this.getStatus() + "," + this.getDescription() + ",null" + "," + this.getStartTimeFormatted() + "," + this.getEndTimeFormatted();
+    String result = this.getId() + "," + this.getTaskType() + "," + this.getTitle() + "," + this.getStatus() + "," + this.getDescription() + ",null" + "," + this.getStartTimeFormatted() + "," + this.getEndTimeFormatted();
 
     return result + "," + this.getAllChildrenList().toString() + "";
   }
