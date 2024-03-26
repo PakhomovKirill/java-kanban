@@ -29,7 +29,7 @@ public class DoubleLinkedList<T extends Task> {
     }
 
     public void removeFromList(Node node) {
-        if(node == null) {
+        if (node == null) {
             return;
         }
 
@@ -54,11 +54,11 @@ public class DoubleLinkedList<T extends Task> {
         sizeList--;
     }
 
-    public ArrayList<Task> getList(){
+    public ArrayList<Task> getList() {
         Node current = headOfList;
         ArrayList<Task> historyList = new ArrayList<>();
 
-        while(current != null) {
+        while (current != null) {
             historyList.add(current.data);
             current = current.next;
         }
@@ -66,7 +66,7 @@ public class DoubleLinkedList<T extends Task> {
         return historyList;
     }
 
-    public int getSize(){
+    public int getSize() {
         return sizeList;
     }
 }
