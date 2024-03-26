@@ -27,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager = managers.getDefaultHistory();
     }
 
-    public void parseTaskByTimestampValue(Enums.TaskActionType type, Object  ...args){
+    public void parseTaskByTimestampValue(Enums.TaskActionType type, Object...args){
 
         switch (type){
             case REMOVE:
@@ -165,6 +165,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         return currentTask;
     }
+
     public Subtask getSubtask(int id) {
         if (!subtasks.containsKey(id)) {
             return null;
@@ -177,6 +178,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         return subtasks.get(id);
     }
+
     public Epic getEpic(int id) {
         if (!epics.containsKey(id)) {
             return null;
@@ -275,6 +277,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTasks() {
         tasks.clear();
     }
+
     public void deleteSubtasks() {
 
         subtasks.clear();
@@ -284,6 +287,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
     }
+
     public void deleteEpics() {
         epics.clear();
         subtasks.clear();
@@ -297,6 +301,7 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.removeTaskFromHistory(id);
         }
     }
+
     public void deleteEpic(int id) {
         if (epics.containsKey(id)) {
             epics.remove(id);
@@ -311,6 +316,7 @@ public class InMemoryTaskManager implements TaskManager {
                     }
                 });
     }
+
     public void deleteSubtask(int id) {
         Subtask currentSubtask = subtasks.get(id);
         Integer currentSubtaskParentId = currentSubtask.getParentId();
