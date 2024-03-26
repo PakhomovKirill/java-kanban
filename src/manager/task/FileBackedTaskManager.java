@@ -13,7 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager{
+public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
 
     private static String fileName = "PracticumTaskList.csv";
     private static final String HOME = System.getProperty("user.home");
@@ -96,7 +96,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
             }
 
             fileUtil.fileWrite(path, tasks, epics, subtasks, headers);
-        } catch (ManagerSaveException e){
+        } catch (ManagerSaveException e) {
             throw new ManagerSaveException(e.getMessage());
         }
     }
