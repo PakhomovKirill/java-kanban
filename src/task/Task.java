@@ -30,7 +30,7 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
         return this.description;
     }
 
-    public Integer getId(){
+    public Integer getId() {
         return this.id;
     }
 
@@ -144,9 +144,9 @@ public class Task extends ArrayList <Task> implements Comparable <Task> {
     @Override
     public String toString() {
         String result =
-                this.getId()+
-                ","+ this.getTaskType() +
-                "," + this.getTitle()+
+                this.getId() +
+                "," + this.getTaskType() +
+                "," + this.getTitle() +
                 "," + this.getStatus() +
                 "," + this.getDescription() +
                 ",null" +
