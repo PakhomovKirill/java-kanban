@@ -82,6 +82,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         return currentTaskEndTime > newTaskStartTime ? true : false;
     }
+
     private void setUniqueTimestampTask(Task task) {
 
         if (task == null) {
@@ -109,7 +110,7 @@ public class InMemoryTaskManager implements TaskManager {
         uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
 
         prioritizedList = Stream.concat(uniqueTimestampTaskList.values().stream(), this.epics.values().stream()
-                        .filter(epic -> epic.getStartTimeToSeconds() != null ))
+                .filter(epic -> epic.getStartTimeToSeconds() != null ))
                 .collect(Collectors.toList());
     }
 
