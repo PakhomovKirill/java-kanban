@@ -27,7 +27,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager = managers.getDefaultHistory();
     }
 
-    public void parseTaskByTimestampValue(Enums.TaskActionType type, Object ...args){
+    public void parseTaskByTimestampValue(Enums.TaskActionType type, Object  ...args){
 
         switch (type){
             case REMOVE:
