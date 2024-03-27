@@ -9,6 +9,6 @@ public class CustomTaskManagerException extends IllegalStateException {
     }
 
     public String getDetailMessage() {
-        return getmessage() + " : " + this.message;
+        return getMessage() + " : " + this.message;
     }
 }
