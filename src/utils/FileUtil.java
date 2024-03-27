@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class FileUtil {
 
-    public Path fileCreate(Path path) throws ManagerSaveException{
+    public Path fileCreate(Path path) throws ManagerSaveException {
         Path file = null;
 
         try {
@@ -30,7 +30,7 @@ public class FileUtil {
                           ArrayList<Task> tasks,
                           ArrayList<Epic> epics,
                           ArrayList<Subtask> subtasks,
-                          String[] headers) throws ManagerSaveException{
+                          String[] headers) throws ManagerSaveException {
         clearFile(path);
 
         try(FileWriter fileWriter = new FileWriter(path.toFile())) {
@@ -84,17 +84,16 @@ public class FileUtil {
         return csvArray;
     }
 
-    public boolean fileIsExist(Path path){
+    public boolean fileIsExist(Path path) {
         return Files.exists(path);
     }
 
-    public static void clearFile(Path path) throws ManagerSaveException{
-        try(PrintWriter writer = new PrintWriter(path.toFile())) {
+    public static void clearFile(Path path) throws ManagerSaveException {
+        try (PrintWriter writer = new PrintWriter(path.toFile())) {
             writer.print("");
             writer.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
-
 }
