@@ -18,6 +18,16 @@ class InMemoryHistoryManagerTest {
     private static TaskManager tm = manager.getDefault();
 
     @Test
+    public void TasksDoublesInHistoryTest(){
+        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
+
+        final int taskId1 = tm.addNewTask(task1);
+        tm.getTask(taskId1);
+        tm.getTask(taskId1);
+        assertEquals(1, tm.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
+    }
+
+    @Test
     public void IsUniqueTaskInHistoryIdTest(){
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
         final int taskId1 = tm.addNewTask(task1);
@@ -63,15 +73,5 @@ class InMemoryHistoryManagerTest {
         linkedList.removeFromList(removedNode);
 
         assertNotEquals(1, linkedList.getSize(),"Узел не удален из списка");
-    }
-
-    @Test
-    public void TasksDoublesInHistoryTest(){
-        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
-
-        final int taskId1 = tm.addNewTask(task1);
-        tm.getTask(taskId1);
-        tm.getTask(taskId1);
-        assertEquals(1, tm.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
     }
 }
