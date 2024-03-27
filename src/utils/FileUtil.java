@@ -54,6 +54,7 @@ public class FileUtil {
 
             fileWriter.close();
         }
+
         catch (IOException e) {
             System.out.println(e);
         }
@@ -75,9 +76,11 @@ public class FileUtil {
 
             return csvArray;
         }
+
         catch (FileNotFoundException e) {
             System.out.println(e);
         }
+
         catch (IOException e) {
             System.out.println(e);
         }
