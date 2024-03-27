@@ -19,11 +19,14 @@ class InMemoryHistoryManagerTest {
 
     @Test
     public void TasksDoublesInHistoryTest(){
-        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
+        TaskManager tm = manager.getDefault();
 
-        final int taskId1 = tm.addNewTask(task1);
+        Task task5 = new Task("Task #1", "Task5 description", Enums.TaskStatus.NEW);
+
+        final int taskId1 = tm.addNewTask(task5);
         tm.getTask(taskId1);
         tm.getTask(taskId1);
+
         assertEquals(1, tm.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
     }
 
