@@ -36,7 +36,7 @@ public class FileUtil {
 
         try (FileWriter fileWriter = new FileWriter(path.toFile())) {
 
-            fileWriter.write( String.join(",", headers) );
+            fileWriter.write(String.join(",", headers));
             fileWriter.write( "\n");
 
             for (Task task : tasks) {
