@@ -44,8 +44,8 @@ public class FileUtil {
             }
 
             for (Epic epic : epics) {
-                String[] EpicArray = Arrays.copyOfRange(epic.toString().split(","), 0, headers.length);
-                fileWriter.write(String.join(",", EpicArray) + "\n");
+                String[] epicArray = Arrays.copyOfRange(epic.toString().split(","), 0, headers.length);
+                fileWriter.write(String.join(",", epicArray) + "\n");
             }
 
             for (Subtask subtask : subtasks) {
@@ -53,9 +53,7 @@ public class FileUtil {
             }
 
             fileWriter.close();
-        }
-
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
@@ -75,13 +73,9 @@ public class FileUtil {
             br.close();
 
             return csvArray;
-        }
-
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println(e);
-        }
-
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
 
