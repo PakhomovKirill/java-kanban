@@ -9,8 +9,7 @@ import utils.Enums;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
 
@@ -73,6 +72,6 @@ class InMemoryHistoryManagerTest {
         final int taskId1 = tm.addNewTask(task1);
         tm.getTask(taskId1);
         tm.getTask(taskId1);
-        assertNotEquals(2, tm.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
+        assertEquals(1, tm.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
     }
 }
