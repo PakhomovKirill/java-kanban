@@ -73,7 +73,6 @@ class InMemoryHistoryManagerTest {
         final int taskId1 = tm.addNewTask(task1);
         tm.getTask(taskId1);
         tm.getTask(taskId1);
-
         assertNotEquals(2, tm.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
     }
 }
