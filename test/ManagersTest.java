@@ -5,13 +5,13 @@ import manager.history.HistoryManager;
 import org.junit.jupiter.api.Test;
 
 class ManagersTest {
-    private static Managers Manager = new Managers();
-    private static HistoryManager HM = Manager.getDefaultHistory();
-    private static HistoryManager TM = Manager.getDefaultHistory();
+    private static Managers manager = new Managers();
+    private static HistoryManager HM = manager.getDefaultHistory();
+    private static HistoryManager tm = manager.getDefaultHistory();
 
     @Test
-    public void IsManagerClassesIsExist(){
+    public void IsManagerClassesIsExist() {
         assertNotNull(HM, "Возвращаемое значение не должно ровняться null");
-        assertNotNull(TM, "Возвращаемое значение не должно ровняться null");
+        assertNotNull(tm, "Возвращаемое значение не должно ровняться null");
     }
 }

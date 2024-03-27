@@ -55,7 +55,7 @@ public class InMemoryTaskManager implements TaskManager {
                     }
                 } catch (IllegalStateException error) {
                     // println тк необходимо не останавливать выполнение потока программы
-                    // throw new CustomTaskManagerException(error.getMessage());
+                    // throw new CustomTaskManagerException(error.getmessage());
                    System.out.println(error);
                 }
                 break;
@@ -64,7 +64,7 @@ public class InMemoryTaskManager implements TaskManager {
                     setUniqueTimestampTask((Task) List.of(args).get(0));
                 } catch (IllegalStateException error) {
                     // println тк необходимо не останавливать выполнение потока программы
-                    // throw new CustomTaskManagerException(error.getMessage());
+                    // throw new CustomTaskManagerException(error.getmessage());
                     System.out.println(error);
                 }
 

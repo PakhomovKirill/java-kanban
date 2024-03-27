@@ -21,7 +21,7 @@ public class FileUtil {
                 System.out.println("Файл успешно создан.");
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getmessage());
         }
 
         return file;
@@ -93,7 +93,7 @@ public class FileUtil {
             writer.print("");
             writer.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getmessage());
         }
     }
 
