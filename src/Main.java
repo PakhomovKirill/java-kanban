@@ -66,8 +66,6 @@ public class Main {
         final Integer subtaskId1 = tm.addNewSubtask(subtask1);
         final Integer subtaskId2 = tm.addNewSubtask(subtask2);
         final Integer subtaskId3 = tm.addNewSubtask(subtask3);
-        final Integer subtaskId4 = tm.addNewSubtask(subtask4);
-        final Integer subtaskId5 = tm.addNewSubtask(subtask5);
 
         printAllTasks(tm);
 
