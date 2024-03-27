@@ -82,11 +82,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         ArrayList<Task> tasks = super.getTasks();
         ArrayList<Epic> epics = super.getEpics();
         ArrayList<Subtask> subtasks = super.getSubtasks();
-        String[] headers = new String[Enums.csvTableHeaders.values().length];
+        String[] headers = new String[Enums.CsvTableHeaders.values().length];
 
         super.parseTaskByTimestampValue(type, args);
 
-        for (Enums.csvTableHeaders value: Enums.csvTableHeaders.values()) {
+        for (Enums.CsvTableHeaders value: Enums.CsvTableHeaders.values()) {
             headers[value.ordinal()] = value.toString();
         }
 
