@@ -26,6 +26,7 @@ public class FileUtil {
 
         return file;
     }
+
     public void fileWrite(Path path,
                           ArrayList<Task> tasks,
                           ArrayList<Epic> epics,
@@ -33,9 +34,9 @@ public class FileUtil {
                           String[] headers) throws ManagerSaveException {
         clearFile(path);
 
-        try(FileWriter fileWriter = new FileWriter(path.toFile())) {
+        try (FileWriter fileWriter = new FileWriter(path.toFile())) {
 
-            fileWriter.write(String.join(",", headers));
+            fileWriter.write( String.join(",", headers) );
             fileWriter.write( "\n");
 
             for (Task task : tasks) {
