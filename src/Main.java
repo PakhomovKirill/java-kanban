@@ -75,14 +75,6 @@ public class Main {
         tm.getEpic(epicId2);
         tm.getEpic(epicId3);
         tm.getEpic(epicId1);
-        tm.getEpic(epicId3);
-        tm.getEpic(epicId3);
-        tm.getEpic(epicId1);
-        tm.getEpic(epicId1);
-        tm.getEpic(epicId1);
-        tm.getEpic(epicId1);
-        tm.getEpic(epicId3);
-        tm.getEpic(epicId3);
         tm.getSubtask(subtaskId2);
         tm.getTask(taskId1);
 
