@@ -30,7 +30,8 @@ public class Enums {
         REMOVE_ALL_TASKS,
         REMOVE_ALL_SUBTASKS,
         REMOVE_ALL_EPICS,
-        UPDATE_TASK_BY_ID
+        UPDATE_TASK_BY_ID,
+        DEFAULT
     }
 
     public enum TimeEnum {

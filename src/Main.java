@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         tm = manager.getDefault();
 
-        printAllTasks(tm);
+        // printAllTasks(tm);
 
         create();
     }
@@ -66,6 +66,7 @@ public class Main {
         final Integer subtaskId1 = tm.addNewSubtask(subtask1);
         final Integer subtaskId2 = tm.addNewSubtask(subtask2);
         final Integer subtaskId3 = tm.addNewSubtask(subtask3);
+        final Integer subtaskId7 = tm.addNewSubtask(subtask7);
 
         printAllTasks(tm);
 
@@ -77,6 +78,7 @@ public class Main {
         tm.getEpic(epicId1);
         tm.getSubtask(subtaskId2);
         tm.getTask(taskId1);
+        tm.getSubtask(subtaskId7);
 
         //Обновление
         System.out.println("" + '\n' + '\n' + "Обновление " + '\n' + '\n');
@@ -127,7 +129,7 @@ public class Main {
         //Таски сортированные по времени начала выполнения
         System.out.println("" + '\n' + '\n' + "Время начала исполнения " + '\n' + '\n');
 
-        System.out.println("Время начала исполнения:");
+        System.out.println("Время начала исполнения:" + tm.getPrioritizedTasks().size());
         for (Task task : tm.getPrioritizedTasks()) {
             System.out.println(task.toString());
         }

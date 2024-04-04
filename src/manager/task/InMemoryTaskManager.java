@@ -10,16 +10,17 @@ import utils.Utils;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.logging.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
+    Logger logger = Logger.getLogger(InMemoryTaskManager.class.getName());
     private HistoryManager<Task> historyManager;
     private Managers managers = new Managers();
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private TreeMap<Long, Task> uniqueTimestampTaskList = new TreeMap<>();
-
     private List<Task> prioritizedList = new ArrayList<>();
     private int generatorId = 0;
 
@@ -31,20 +32,20 @@ public class InMemoryTaskManager implements TaskManager {
 
         switch (type) {
             case REMOVE:
-                Integer id = (Integer) List.of(args).get(0);
-                uniqueTimestampTaskList.values().stream().filter(task -> task.getId() != id);
+                Integer removeId = (Integer) List.of(args).get(0);
+                this.prioritizedList = this.uniqueTimestampTaskList.values().stream().filter(task -> task.getId() != removeId).collect(Collectors.toList());
                 break;
 
             case REMOVE_ALL_EPICS:
-                uniqueTimestampTaskList.values().stream().filter(task -> task.getTaskType() != Enums.TasksType.EPIC.toString());
+                this.prioritizedList = this.uniqueTimestampTaskList.values().stream().filter(task -> task.getTaskType() != Enums.TasksType.EPIC.toString()).collect(Collectors.toList());
                 break;
 
             case REMOVE_ALL_SUBTASKS:
-                uniqueTimestampTaskList.values().stream().filter(task -> task.getTaskType() != Enums.TasksType.SUBTASK.toString());
+                this.prioritizedList = this.uniqueTimestampTaskList.values().stream().filter(task -> task.getTaskType() != Enums.TasksType.SUBTASK.toString()).collect(Collectors.toList());
                 break;
 
             case REMOVE_ALL_TASKS:
-                uniqueTimestampTaskList.values().stream().filter(task -> task.getTaskType() != Enums.TasksType.TASK.toString());
+                this.prioritizedList = this.uniqueTimestampTaskList.values().stream().filter(task -> task.getTaskType() != Enums.TasksType.TASK.toString()).collect(Collectors.toList());
                 break;
 
             case UPDATE_TASK_BY_ID:
@@ -52,23 +53,21 @@ public class InMemoryTaskManager implements TaskManager {
                     Task task = (Task) List.of(args).get(0);
                     if (this.uniqueTimestampTaskList.containsKey(task.getStartTimeToSeconds())) {
                         this.uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
+                        this.prioritizedList = new ArrayList<>(this.uniqueTimestampTaskList.values());
                     }
                 } catch (IllegalStateException error) {
-                    // println тк необходимо не останавливать выполнение потока программы
-                    // throw new CustomTaskManagerException(error.getmessage());
-                   System.out.println(error);
+                   logger.log(Level.WARNING, error.toString());
                 }
                 break;
             case CHECK_TO_UNIQUE_TIMESTAMP:
                 try {
                     setUniqueTimestampTask((Task) List.of(args).get(0));
                 } catch (IllegalStateException error) {
-                    // println тк необходимо не останавливать выполнение потока программы
-                    // throw new CustomTaskManagerException(error.getmessage());
-                    System.out.println(error);
+                   logger.log(Level.WARNING, error.toString());
                 }
 
                 break;
+            case DEFAULT:
             default:
                 break;
         }
@@ -77,10 +76,10 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     private boolean checkToUniqueTimeStamp(Task currentTask, Task newTask) {
-        long  currentTaskEndTime = currentTask.getEndTimeToSeconds();
-        long  newTaskStartTime = newTask.getStartTimeToSeconds();
+        long currentTaskEndTime = currentTask.getEndTimeToSeconds();
+        long newTaskStartTime = newTask.getStartTimeToSeconds();
 
-        return currentTaskEndTime > newTaskStartTime ? true : false;
+        return currentTaskEndTime > newTaskStartTime;
     }
 
     private void setUniqueTimestampTask(Task task) {
@@ -93,23 +92,23 @@ public class InMemoryTaskManager implements TaskManager {
             throw new IllegalStateException("Таск не имеет время начала");
         }
 
-        if (uniqueTimestampTaskList.size() == 0) {
-            uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
+        if (this.uniqueTimestampTaskList.size() == 0) {
+            this.uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
         }
 
-        uniqueTimestampTaskList.values().stream().forEach((item) -> {
+        this.uniqueTimestampTaskList.values().stream().forEach((item) -> {
             if (item.getStartTimeToSeconds() == null) {
                 throw new IllegalStateException("Таск не имеет время начала");
             }
 
             if (checkToUniqueTimeStamp(item, task)) {
-                throw new IllegalStateException("Время выполнения имеет пересечение с другими задачами");
+               throw new IllegalStateException("Время выполнения имеет пересечение с другими задачами");
             }
         });
 
-        uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
+        this.uniqueTimestampTaskList.put(task.getStartTimeToSeconds(), task);
 
-        prioritizedList = Stream.concat(uniqueTimestampTaskList.values().stream(), this.epics.values().stream().filter(epic -> epic.getStartTimeToSeconds() != null)).collect(Collectors.toList());
+        this.prioritizedList = new ArrayList<>(this.uniqueTimestampTaskList.values());
     }
 
     private void updateEpicStatus(Integer epicId) {

@@ -153,7 +153,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public int addNewEpic(Epic epic) {
       int epicId = super.addNewEpic(epic);
         try {
-            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, epic);
+            saveToFile(Enums.TaskActionType.DEFAULT, epic);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -187,7 +187,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public Integer updateEpic(Epic epic) {
       Integer epicId = super.updateEpic(epic);
         try {
-            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, epic);
+            saveToFile(Enums.TaskActionType.DEFAULT, epic);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
