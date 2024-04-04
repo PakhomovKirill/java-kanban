@@ -7,7 +7,7 @@ public class Enums {
         IN_PROGRESS
     }
 
-    public enum csvTableHeaders {
+    public enum CsvTableHeaders {
         id,
         type,
         name,
@@ -18,28 +18,31 @@ public class Enums {
         endTime
     }
 
-    public enum TasksType{
+    public enum TasksType {
         SUBTASK,
         EPIC,
         TASK
     }
 
-    public enum TaskActionType{
+    public enum TaskActionType {
         REMOVE,
         CHECK_TO_UNIQUE_TIMESTAMP,
         REMOVE_ALL_TASKS,
         REMOVE_ALL_SUBTASKS,
         REMOVE_ALL_EPICS,
-        UPDATE_TASK_BY_ID
+        UPDATE_TASK_BY_ID,
+        DEFAULT
     }
 
     public enum TimeEnum {
+
         DATE_MASK {
             @Override
             public String toString() {
                 return "dd.MM.yy HH:mm";
             }
         },
+
         TIMEZONE_MOSCOW {
             @Override
             public String toString() {

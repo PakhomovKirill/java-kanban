@@ -1,5 +1,3 @@
-package tests;
-
 import manager.Managers;
 import manager.task.TaskManager;
 import org.junit.jupiter.api.Test;
@@ -13,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TaskTest {
 
-    private static Managers Manager = new Managers();
-    private static TaskManager TM = Manager.getDefault();
+    private static Managers manager = new Managers();
+    private static TaskManager tm = manager.getDefault();
 
     @Test
-    public void IsEqualTasksTest(){
+    public void IsEqualTasksTest() {
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW, 1);
         Task task2 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW, 1);
 
@@ -25,7 +23,7 @@ class TaskTest {
     }
 
     @Test
-    public void IsEqualEpicTest(){
+    public void IsEqualEpicTest() {
         Epic task1 = new Epic("Epic #1", "Epic1 description", 1);
         Epic task2 = new Epic("Epic #1", "Epic1 description", 1);
 
@@ -33,7 +31,7 @@ class TaskTest {
     }
 
     @Test
-    public void IsEqualSubtaskTest(){
+    public void IsEqualSubtaskTest() {
         Subtask task1 = new Subtask("Subtask #1", "Subtask1 description", Enums.TaskStatus.NEW, 1);
         Subtask task2 = new Subtask("Subtask #1", "Subtask1 description", Enums.TaskStatus.NEW, 1);
 
@@ -41,7 +39,7 @@ class TaskTest {
     }
 
     @Test
-    public void IsEpicNotNullTest(){
+    public void IsEpicNotNullTest() {
         // крайне неверно описанный в тз тесткейс, ментор описал следующим образом:
 
         // достаточно добавить проверку на то что если в объекте сабтаски добавляемой в
@@ -49,14 +47,14 @@ class TaskTest {
 
         Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", Enums.TaskStatus.NEW, 0);
 
-        Integer subtask1ID = TM.addNewSubtask(subtask1);
+        Integer subtask1ID = tm.addNewSubtask(subtask1);
 
         assertNull(subtask1ID, "Айди сабтаска не равен null");
         // assertNotNull(subtask1ID, "Айди сабтаска равен null"); //--> вернет exception;
     }
 
     @Test
-    public void IsSubtaskNotNullTest(){
+    public void IsSubtaskNotNullTest() {
         // крайне неверно описанный в тз тесткейс, ментор описал следующим образом:
 
         // при редактировании сабтаски, должны быть проверки что id редактируемой сабтаски есть в хранилище сабтасок и что epic_id
@@ -64,14 +62,14 @@ class TaskTest {
 
         Subtask subtask1 = new Subtask("Subtask #1-1", "Subtask1 description", Enums.TaskStatus.NEW, 0);
 
-        Integer subtask1ID = TM.updateSubtask(subtask1);
+        Integer subtask1ID = tm.updateSubtask(subtask1);
 
         assertNull(subtask1ID, "Айди сабтаска не равен null");
         //assertNotNull(subtask1ID, "Айди сабтаска равен null"); // --> вернет exception;
     }
 
     @Test
-    public void IsUniqueTaskIdTest(){
+    public void IsUniqueTaskIdTest() {
         // крайне неверно описанный в тз тесткейс, ментор описал следующим образом:
 
         // нужно проверять что при сохранении новых сущностей они сохраняются со сгенерированным id, а не с id который приходит в объекте изначально
@@ -82,20 +80,18 @@ class TaskTest {
         int sameId = 0;
 
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW, sameId);
-        final int taskId1 = TM.addNewTask(task1);
+        final int taskId1 = tm.addNewTask(task1);
 
         assertNotEquals(taskId1, sameId, "Айди не должны совпадать и соответствовать sameId");
 
         Epic epic1 = new Epic("Task #1", "Task1 description", sameId);
-        final int epicId1 = TM.addNewEpic(epic1);
+        final int epicId1 = tm.addNewEpic(epic1);
 
         assertNotEquals(epicId1, sameId, "Айди не должны совпадать и соответствовать sameId");
 
         Subtask subtask1 = new Subtask("Task #1", "Task1 description", Enums.TaskStatus.NEW, epicId1, sameId);
-        final int subtaskId1 = TM.addNewSubtask(subtask1);
+        final int subtaskId1 = tm.addNewSubtask(subtask1);
 
         assertNotEquals(subtaskId1, sameId, "Айди не должны совпадать и соответствовать sameId");
     }
-
-
 }

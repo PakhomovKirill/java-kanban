@@ -7,14 +7,16 @@ import manager.history.HistoryManager;
 import manager.task.FileBackedTaskManager;
 
 public class Managers {
-    public TaskManager getDefault(){
+
+    public TaskManager getDefault() {
         return new FileBackedTaskManager();
     }
+
     public HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
 
-    public InMemoryTaskManager InMemoryTaskManager(){
+    public InMemoryTaskManager inMemoryTaskManager() {
         return new InMemoryTaskManager();
     }
 }

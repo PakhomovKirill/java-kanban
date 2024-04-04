@@ -1,5 +1,3 @@
-package tests;
-
 import manager.Managers;
 import manager.history.DoubleLinkedList;
 import manager.history.Node;
@@ -15,35 +13,48 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
 
-    private static Managers Manager = new Managers();
+    private static Managers manager = new Managers();
 
-    private static TaskManager TM = Manager.getDefault();
+    private static TaskManager tm = manager.getDefault();
+
+    @Test
+    public void TasksDoublesInHistoryTest(){
+        TaskManager tm = manager.getDefault();
+
+        Task task5 = new Task("Task #1", "Task5 description", Enums.TaskStatus.NEW);
+
+        final int taskId1 = tm.addNewTask(task5);
+        tm.getTask(taskId1);
+        tm.getTask(taskId1);
+
+        assertEquals(1, tm.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
+    }
 
     @Test
     public void IsUniqueTaskInHistoryIdTest(){
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
-        final int taskId1 = TM.addNewTask(task1);
-        TM.getTask(taskId1);
+        final int taskId1 = tm.addNewTask(task1);
+        tm.getTask(taskId1);
 
         Task task2 = new Task("Task #1 updated", "Task1 description updated", Enums.TaskStatus.NEW, taskId1);
-        TM.updateTask(task2);
-        TM.getTask(taskId1);
+        tm.updateTask(task2);
+        tm.getTask(taskId1);
 
-        ArrayList<Task> historyList = TM.getHistory();
+        ArrayList<Task> historyList = tm.getHistory();
         assertNotEquals(historyList.size(), 2, "Лист не может содержать 2 обектов с идентичным id");
     }
 
     @Test
     public void RemoveItemFromHistoryList(){
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
-        final int taskId1 = TM.addNewTask(task1);
-        TM.getTask(taskId1);
+        final int taskId1 = tm.addNewTask(task1);
+        tm.getTask(taskId1);
 
-        assertNotNull(TM.getHistory().get(0),"Задача не добавлена в историю");
+        assertNotNull(tm.getHistory().get(0),"Задача не добавлена в историю");
 
-        TM.removeHistoryTask(taskId1);
+        tm.removeHistoryTask(taskId1);
 
-        ArrayList<Task> historyList = TM.getHistory();
+        ArrayList<Task> historyList = tm.getHistory();
 
         assertNotEquals(1,historyList.size(),"Задача не удалена из истории");
     }
@@ -51,7 +62,7 @@ class InMemoryHistoryManagerTest {
     @Test
     public void RemoveItemFromLinkedListTest(){
         Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
-        final int taskId1 = TM.addNewTask(task1);
+        final int taskId1 = tm.addNewTask(task1);
 
         HashMap<Integer, Node> nodeList = new HashMap<>();
         DoubleLinkedList linkedList = new DoubleLinkedList();
@@ -65,16 +76,5 @@ class InMemoryHistoryManagerTest {
         linkedList.removeFromList(removedNode);
 
         assertNotEquals(1, linkedList.getSize(),"Узел не удален из списка");
-    }
-
-    @Test
-    public void TasksDoublesInHistoryTest(){
-        Task task1 = new Task("Task #1", "Task1 description", Enums.TaskStatus.NEW);
-
-        final int taskId1 = TM.addNewTask(task1);
-        TM.getTask(taskId1);
-        TM.getTask(taskId1);
-
-        assertNotEquals(2, TM.getHistory().size(), "В истории просмотров не должно быть дублирующихся тасков");
     }
 }

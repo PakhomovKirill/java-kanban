@@ -13,13 +13,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager{
+public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
 
     private static String fileName = "PracticumTaskList.csv";
     private static final String HOME = System.getProperty("user.home");
     private static Path path = Paths.get(HOME, fileName);
     private static FileUtil fileUtil = new FileUtil();
-    public FileBackedTaskManager(){
+
+    public FileBackedTaskManager() {
         super();
         try {
             parseCsvFile();
@@ -29,14 +30,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     public void parseCsvFile() throws ManagerSaveException {
-        if(fileUtil.fileIsExist(path)){
+        if (fileUtil.fileIsExist(path)) {
           try {
               File file = new File(path.toFile().toURI());
               ArrayList<String[]> csvList;
               csvList = fileUtil.loadFromFile(file);
               csvList.remove(0);
 
-              for (String[] item: csvList){
+              for (String[] item: csvList) {
                   final Integer id = Integer.parseInt(item[0]);
                   final Enums.TasksType type = Enums.TasksType.valueOf(item[1]);
                   final String name = item[2];
@@ -46,24 +47,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
                   Enums.TasksType key = id != null ? type : null;
 
-                  switch (key){
-                      case EPIC:
-                          {
+                  switch (key) {
+                      case EPIC: {
                               Epic epic = new Epic(name, description);
                               super.addNewEpic(epic);
                           }
                           break;
-                      case SUBTASK:
-                          {
-                              if(epicId  != null){
+                      case SUBTASK: {
+                              if (epicId  != null) {
                                   Subtask subtask = new Subtask(name, description, Enums.TaskStatus.valueOf(status), Integer.parseInt(epicId));
-                                  System.out.println(subtask.getId());
                                   super.addNewSubtask(subtask);
                               }
                           }
                           break;
-                      case TASK:
-                          {
+                      case TASK: {
                               Task task = new Task(name, description, Enums.TaskStatus.valueOf(status));
                               super.addNewTask(task);
                           }
@@ -72,34 +69,34 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
                           break;
                   }
               }
-            } catch (ManagerSaveException e){
+            } catch (ManagerSaveException e) {
               throw new ManagerSaveException(e.getMessage());
-            } catch (Exception e){
+            } catch (Exception e) {
               throw new ManagerSaveException(e.getMessage());
             }
         }
     }
 
-    private void saveToFile(Enums.TaskActionType type, Object ...args) throws ManagerSaveException {
+    private void saveToFile(Enums.TaskActionType type, Object...args) throws ManagerSaveException {
 
         ArrayList<Task> tasks = super.getTasks();
         ArrayList<Epic> epics = super.getEpics();
         ArrayList<Subtask> subtasks = super.getSubtasks();
-        String[] headers = new String[Enums.csvTableHeaders.values().length];
+        String[] headers = new String[Enums.CsvTableHeaders.values().length];
 
         super.parseTaskByTimestampValue(type, args);
 
-        for(Enums.csvTableHeaders value: Enums.csvTableHeaders.values()){
+        for (Enums.CsvTableHeaders value: Enums.CsvTableHeaders.values()) {
             headers[value.ordinal()] = value.toString();
         }
 
         try {
-            if(!fileUtil.fileIsExist(path)){
+            if (!fileUtil.fileIsExist(path)) {
                 fileUtil.fileCreate(path);
             }
 
             fileUtil.fileWrite(path, tasks, epics, subtasks, headers);
-        } catch (ManagerSaveException e){
+        } catch (ManagerSaveException e) {
             throw new ManagerSaveException(e.getMessage());
         }
     }
@@ -145,7 +142,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public int addNewTask(Task task)  {
         int taskId = super.addNewTask(task);
         try {
-            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP , task);
+            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, task);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -156,7 +153,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public int addNewEpic(Epic epic) {
       int epicId = super.addNewEpic(epic);
         try {
-            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, epic);
+            saveToFile(Enums.TaskActionType.DEFAULT, epic);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -190,7 +187,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     public Integer updateEpic(Epic epic) {
       Integer epicId = super.updateEpic(epic);
         try {
-            saveToFile(Enums.TaskActionType.CHECK_TO_UNIQUE_TIMESTAMP, epic);
+            saveToFile(Enums.TaskActionType.DEFAULT, epic);
         } catch (ManagerSaveException e) {
             throw new RuntimeException(e);
         }
@@ -265,15 +262,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
     }
 
-    public void removeHistoryTask(Integer id){
+    public void removeHistoryTask(Integer id) {
       super.removeHistoryTask(id);
     }
 
-    public ArrayList<Task> getHistory(){
+    public ArrayList<Task> getHistory() {
       return super.getHistory();
     }
 
-    public List<Task> getPrioritizedTasks(){
+    public List<Task> getPrioritizedTasks() {
         return super.getPrioritizedTasks();
     }
 }

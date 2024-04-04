@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 public class FileUtil {
 
-    public Path fileCreate(Path path) throws ManagerSaveException{
+    public Path fileCreate(Path path) throws ManagerSaveException {
         Path file = null;
 
         try {
@@ -26,25 +26,27 @@ public class FileUtil {
 
         return file;
     }
+
     public void fileWrite(Path path,
                           ArrayList<Task> tasks,
                           ArrayList<Epic> epics,
                           ArrayList<Subtask> subtasks,
-                          String[] headers) throws ManagerSaveException{
+                          String[] headers) throws ManagerSaveException {
         clearFile(path);
 
-        try(FileWriter fileWriter = new FileWriter(path.toFile())) {
+        try (FileWriter fileWriter = new FileWriter(path.toFile())) {
 
             fileWriter.write(String.join(",", headers));
-            fileWriter.write( "\n");
+
+            fileWriter.write("\n");
 
             for (Task task : tasks) {
                 fileWriter.write(task.toString() + "\n");
             }
 
             for (Epic epic : epics) {
-                String[] EpicArray = Arrays.copyOfRange(epic.toString().split(","), 0, headers.length);
-                fileWriter.write(String.join(",", EpicArray) + "\n");
+                String[] epicArray = Arrays.copyOfRange(epic.toString().split(","), 0, headers.length);
+                fileWriter.write(String.join(",", epicArray) + "\n");
             }
 
             for (Subtask subtask : subtasks) {
@@ -52,8 +54,7 @@ public class FileUtil {
             }
 
             fileWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
@@ -73,28 +74,25 @@ public class FileUtil {
             br.close();
 
             return csvArray;
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println(e);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
 
         return csvArray;
     }
 
-    public boolean fileIsExist(Path path){
+    public boolean fileIsExist(Path path) {
         return Files.exists(path);
     }
 
-    public static void clearFile(Path path) throws ManagerSaveException{
-        try(PrintWriter writer = new PrintWriter(path.toFile())) {
+    public static void clearFile(Path path) throws ManagerSaveException {
+        try (PrintWriter writer = new PrintWriter(path.toFile())) {
             writer.print("");
             writer.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
-
 }
